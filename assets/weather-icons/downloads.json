@@ -1,0 +1,24 @@
+[
+  {
+    "pack": "Meteocons",
+    "version": "0.1.0",
+    "source": "https://registry.npmjs.org/@meteocons/svg/-/svg-0.1.0.tgz",
+    "sha256": "91b48d1f8497d9e8f4ed1d5bcc32d306aaa5050de99c38467c2a58f7add5a501",
+    "files": 1903,
+    "svg": 1900
+  },
+  {
+    "pack": "amcharts",
+    "source": "https://download.amcharts.com/1.0/amcharts_weather_icons_1.0.0.zip",
+    "sha256": "20b84cabd8402b2e418383b90a9a1382fc890db5c90849a9141a2b63da78e35e",
+    "files": 55,
+    "svg": 54
+  },
+  {
+    "pack": "weather-icons",
+    "source": "https://codeload.github.com/erikflowers/weather-icons/zip/refs/heads/master",
+    "sha256": "836f632fef000c1e7e43175e5310e9ab413077a6d08c6db079097eba060894ee",
+    "files": 463,
+    "svg": 222
+  }
+]

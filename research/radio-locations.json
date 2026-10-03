@@ -1,0 +1,20 @@
+[
+  {"id":"witf","match":"WITF","name":"WITF 89.5","callSign":"WITF","preset":"WITF","genre":"News & public radio","city":"Harrisburg","region":"PA","zip":"17111","source":"https://www.witf.org/programs/radio-info/"},
+  {"id":"wxpn","match":"WXPN","name":"WXPN 88.5","callSign":"WXPN","preset":"WXPN","genre":"Alternative & music discovery","city":"Philadelphia","region":"PA","zip":"19104","source":"https://xpn.org/contribute/"},
+  {"id":"wjtl","match":"WJTL","name":"WJTL 90.3","callSign":"WJTL","preset":"WJTL","genre":"Contemporary Christian","city":"Manheim","region":"PA","zip":"17545","source":"https://wjtl.com/stationinfo/contact-us/"},
+  {"id":"wdac","match":"WDAC","name":"Hope 94.5 WDAC","callSign":"WDAC","preset":"WDAC","genre":"Christian music & teaching","city":"Lancaster","region":"PA","zip":"17601","source":"https://wdac.com/contact-us/"},
+  {"id":"whp","match":"WHP 580","name":"WHP 580","callSign":"WHP","preset":"WHP","genre":"News & talk","city":"Harrisburg","region":"PA","zip":"17101","source":"https://whp580.iheart.com/"},
+  {"id":"wnnk","match":"WINK 104","name":"WINK 104","callSign":"WNNK-FM","preset":"WINK","genre":"Pop & adult contemporary","city":"Harrisburg","region":"PA","zip":"17110","source":"https://www.wink104.com/station-information/"},
+  {"id":"wsox","match":"96.1 SOX","name":"96.1 SOX","callSign":"WSOX","preset":"SOX","genre":"Classic hits","city":"York","region":"PA","zip":"17401","source":"https://www.961sox.com/"},
+  {"id":"wiov","match":"I-105","name":"I-105 WIOV","callSign":"WIOV-FM","preset":"I-105","genre":"Country","city":"Ephrata","region":"PA","zip":"17522","source":"https://www.wiov.com/listen-live/"},
+  {"id":"warm","match":"WARM 103.3","name":"WARM 103.3","callSign":"WARM-FM","preset":"WARM","genre":"Adult contemporary","city":"York","region":"PA","zip":"17401","source":"https://www.warm1033.com/listen-live/"},
+  {"id":"whyy","match":"WHYY","name":"WHYY 90.9","callSign":"WHYY-FM","preset":"WHYY","genre":"News & public radio","city":"Philadelphia","region":"PA","zip":"19106","source":"https://whyy.org/contact-us/"},
+  {"id":"wpsu","match":"WPSU","name":"WPSU 91.5","callSign":"WPSU","preset":"WPSU","genre":"News, classical & public radio","city":"University Park","region":"PA","zip":"16802","source":"https://wpsu.org/"},
+  {"id":"wvia","match":"WVIA","name":"WVIA 89.9","callSign":"WVIA-FM","preset":"WVIA","genre":"Classical, jazz & public radio","city":"Pittston","region":"PA","zip":"18640","source":"https://www.wvia.org/contact/"},
+  {"id":"wypr","match":"WYPR","name":"WYPR 88.1","callSign":"WYPR","preset":"WYPR","genre":"News & public radio","city":"Baltimore","region":"MD","zip":"21218","source":"https://www.wypr.org/contact-us"},
+  {"id":"wamu","match":"WAMU","name":"WAMU 88.5","callSign":"WAMU","preset":"WAMU","genre":"News & public radio","city":"Washington","region":"DC","zip":"20016","source":"https://publicfiles.fcc.gov/fm-profile/wamu"},
+  {"id":"wdiy","match":"WDIY","name":"WDIY 88.1","callSign":"WDIY","preset":"WDIY","genre":"Music & public radio","city":"Bethlehem","region":"PA","zip":"18015","source":"https://www.wdiy.org/contact"},
+  {"id":"wlan","match":"FM97 WLAN","name":"FM97 WLAN","callSign":"WLAN-FM","preset":"FM97","genre":"Pop & hit music","city":"Lancaster","region":"PA","zip":"17601","source":"https://fm97.iheart.com/"},
+  {"id":"wrvv","match":"The River 97.3","name":"The River 97.3","callSign":"WRVV","preset":"RIVER","genre":"Classic rock","city":"Harrisburg","region":"PA","zip":"17101","source":"https://www.iheart.com/live/the-river-973-1985/"},
+  {"id":"wqxa","match":"105.7 The X","name":"105.7 The X","callSign":"WQXA-FM","preset":"THE X","genre":"Rock","city":"York","region":"PA","zip":"17401","source":"https://www.1057thex.com/"}
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "name": "WITF",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WITFFM.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://18153.live.streamtheworld.com:443/WITFFM.mp3"
+  },
+  {
+    "name": "WXPN",
+    "url": "https://wxpn.xpn.org/xpnmp3hi",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://wxpn.xpn.org/xpnmp3hi"
+  },
+  {
+    "name": "WJTL",
+    "url": "https://us9.maindigitalstream.com/ssl/WJTL",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://us9.maindigitalstream.com/ssl/WJTL"
+  },
+  {
+    "name": "WDAC",
+    "url": "https://ice66.securenetsystems.net/WDAC",
+    "status": 200,
+    "type": "audio/aac",
+    "bytes": 2048,
+    "resolved": "https://ice66.securenetsystems.net/WDAC"
+  },
+  {
+    "name": "WHP 580",
+    "url": "https://stream.revma.ihrhls.com/zc4027",
+    "status": 200,
+    "type": "audio/aac",
+    "bytes": 2048,
+    "resolved": "https://cloud.revma.ihrhls.com/zc4027?rj-org=n25b-e2&rj-ttl=5&rj-tok=AAABoP_PwaEAFjPJWw-1To--sw"
+  },
+  {
+    "name": "WINK 104",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WNNKFMAAC.aac",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "resolved": "https://26233.live.streamtheworld.com:443/WNNKFMAAC.aac"
+  },
+  {
+    "name": "96.1 SOX",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WSOXFMAAC.aac",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "resolved": "https://18323.live.streamtheworld.com:443/WSOXFMAAC.aac"
+  },
+  {
+    "name": "I-105",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WIOVFMAAC.aac",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "resolved": "https://26733.live.streamtheworld.com:443/WIOVFMAAC.aac"
+  },
+  {
+    "name": "WARM 103.3",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WARMFMAAC.aac",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "resolved": "https://26433.live.streamtheworld.com:443/WARMFMAAC.aac"
+  },
+  {
+    "name": "WHYY",
+    "url": "https://whyy.streamguys1.com/whyy-mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://whyy.streamguys1.com/whyy-mp3"
+  },
+  {
+    "name": "WPSU",
+    "url": "https://wpsu-ice.streamguys1.com/wpsu1",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://wpsu-ice.streamguys1.com/wpsu1"
+  },
+  {
+    "name": "WVIA",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WVIAFM.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://29309.live.streamtheworld.com:443/WVIAFM.mp3"
+  },
+  {
+    "name": "WYPR",
+    "url": "https://wtmd-ice.streamguys1.com/wypr-1",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "resolved": "https://wtmd-ice.streamguys1.com/wypr-1"
+  },
+  {
+    "name": "WAMU",
+    "url": "https://wamu.cdnstream1.com/wamu.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "https://wamu.cdnstream1.com/wamu.mp3"
+  },
+  {
+    "name": "WDIY",
+    "url": "http://war.str3am.com:7880/wdiy_7880",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 2048,
+    "resolved": "http://war.str3am.com:7880/wdiy_7880"
+  },
+  {
+    "name": "FM97 WLAN",
+    "url": "https://stream.revma.ihrhls.com/zc2776",
+    "status": 200,
+    "type": "audio/aac",
+    "bytes": 2048,
+    "station_name": "FM97"
+  },
+  {
+    "name": "The River 97.3",
+    "url": "https://stream.revma.ihrhls.com/zc1985",
+    "status": 200,
+    "type": "audio/aac",
+    "bytes": 2048,
+    "station_name": "River 97.3"
+  },
+  {
+    "name": "105.7 The X",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/WQXAFMAAC.aac",
+    "status": 200,
+    "type": "audio/aacp",
+    "bytes": 2048,
+    "station_name": "WQXAFM"
+  }
+]

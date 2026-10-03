@@ -1,0 +1,33 @@
+#mechanical-clock{width:100%;height:100%;max-height:100%;overflow:visible;filter:drop-shadow(0 10px 14px #0008)}
+#mechanical-clock text{font-family:Inter,sans-serif;fill:#e3e9e5;stroke:none}
+#mechanical-clock .mf-brand{font-family:Georgia,serif;font-size:13px;letter-spacing:1.7px;fill:#e4c263}
+#mechanical-clock .mf-small{font-size:6.3px;letter-spacing:1.2px;fill:#a9b2ae}
+#mechanical-clock .mf-gold-text{fill:#d1b563;font-size:6px;letter-spacing:.7px}
+#mechanical-clock .mf-time{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.4px}
+#mechanical-clock .mf-date{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:600}
+#mechanical-clock .mf-index{font-family:'Barlow Condensed',sans-serif;font-size:19px;fill:#c4c9c2}
+#mechanical-clock .mf-script{font-family:Georgia,serif;font-size:15px;font-style:italic;fill:#e8c358}
+.mf-gear{animation:mf-turn var(--period) linear infinite;animation-direction:var(--direction);transform-origin:0 0}
+.mf-balance{animation:mf-oscillate .85s ease-in-out infinite alternate;animation-delay:var(--phase);transform-origin:0 0}
+@keyframes mf-turn{to{transform:rotate(360deg)}}
+@keyframes mf-oscillate{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+#mechanical-clock[hidden] .mf-motion,.mf-paused .mf-motion,.show-calendar .mf-motion,.center-system-selected .mf-motion,.center-m3u-selected .mf-motion{animation-play-state:paused}
+@media(max-width:900px){.mechanical-face-selected .clock-wrap{position:relative;inset:auto;flex:1;min-height:0}}
+@media(prefers-reduced-motion:reduce){#mechanical-clock .mf-motion{animation:none!important}}
+#aviation-clock{width:100%;height:100%;max-height:100%;overflow:visible;filter:drop-shadow(0 10px 14px #0009)}
+#aviation-clock text{font-family:'Barlow Condensed',sans-serif;text-shadow:none;stroke:none}
+#aviation-clock .af-number{font-size:57px;font-weight:700;fill:url(#af-steel);letter-spacing:-2px}
+#aviation-clock .af-bezel{font-family:Inter,sans-serif;font-size:9px;font-weight:700;fill:#d4d9ce;dominant-baseline:middle}
+#aviation-clock .af-sub-number{font-family:Inter,sans-serif;font-size:10px;font-weight:600;fill:#303b34;text-anchor:middle}
+#aviation-clock .af-sub-label{font-family:Inter,sans-serif;font-size:4px;letter-spacing:.6px;fill:#636d5f;text-anchor:middle}
+#aviation-clock .af-brand{font-family:Georgia,serif;font-size:11px;font-weight:bold;letter-spacing:1px;fill:#d7ddd3}
+#aviation-clock .af-caption{font-family:Inter,sans-serif;font-size:5.2px;letter-spacing:.8px;fill:#a9b2a6}
+#aviation-clock .af-automatic{font-family:Inter,sans-serif;font-size:6px;letter-spacing:1.5px;fill:#c14738}
+#aviation-clock .af-date{font-family:Inter,sans-serif;font-size:21px;font-weight:700;fill:#171d19}
+@media(max-width:900px){.aviation-face-selected .clock-wrap{position:relative;inset:auto;flex:1;min-height:0}}
+#rectangular-clock{width:100%;height:100%;max-height:100%;overflow:visible;filter:drop-shadow(0 10px 14px #0008)}
+#rectangular-clock text{text-shadow:none;stroke:none}
+#rectangular-clock .rf-number{font-family:Georgia,'Times New Roman',serif;font-size:34px;font-weight:700;font-style:italic;fill:url(#rf-painted-gold);letter-spacing:-2px}
+#rectangular-clock .rf-sub-number{font-family:Inter,sans-serif;font-size:7px;fill:url(#rf-painted-gold)}
+#rectangular-clock .rf-brand{font-family:Inter,sans-serif;font-size:8px;font-weight:600;letter-spacing:1.8px;fill:#55513f}
+@media(max-width:900px){.rectangular-face-selected .clock-wrap{position:relative;inset:auto;flex:1;min-height:0}}

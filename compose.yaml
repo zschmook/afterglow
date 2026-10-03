@@ -1,0 +1,7 @@
+services:
+  dashboard:
+    build: .
+    container_name: touchscreen-console
+    ports:
+      - "10000:8080"
+    restart: unless-stopped

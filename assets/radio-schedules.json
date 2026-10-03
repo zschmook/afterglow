@@ -1,0 +1,15 @@
+{
+  "witf": {
+    "source": "https://www.witf.org/programs/radio-schedule/",
+    "checkedAt": "2026-10-03T00:00:00Z",
+    "expiresAt": "2026-11-03T00:00:00Z",
+    "timezone": "America/New_York",
+    "blocks": [
+      {"days":[1,2,3],"shows":[["05:00","Morning Edition"],["09:00","BBC Newshour"],["10:00","1A"],["12:00","The Spark"],["13:00","On Point"],["14:00","BBC Newsroom"],["14:30","Today, Explained"],["15:00","Fresh Air"],["16:00","All Things Considered"],["18:00","Marketplace"],["18:30","BBC World Business Report"],["19:00","The Daily"],["19:30","Today, Explained"],["20:00","The Spark"],["21:00","Think"],["22:00","BBC World Service"]]},
+      {"days":[4],"shows":[["05:00","Morning Edition"],["09:00","BBC Newshour"],["10:00","1A"],["12:00","The Spark"],["13:00","On Point"],["14:00","BBC Newsroom"],["14:30","Today, Explained"],["15:00","Fresh Air"],["16:00","All Things Considered"],["18:00","Marketplace"],["18:30","BBC World Business Report"],["19:00","The Daily"],["19:30","Today, Explained"],["20:00","The Spark"],["21:00","The Middle"],["22:00","BBC World Service"]]},
+      {"days":[5],"shows":[["05:00","Morning Edition"],["09:00","BBC Newshour"],["10:00","1A"],["12:00","The Spark"],["13:00","On Point"],["14:00","Science Friday"],["16:00","All Things Considered"],["18:00","Marketplace"],["18:30","BBC World Business Report"],["19:00","The Daily"],["19:30","The Allegheny Front"],["20:00","The Spark"],["21:00","Reveal"],["22:00","BBC World Service"]]},
+      {"days":[6],"shows":[["05:00","Travel with Rick Steves"],["06:00","Radiolab"],["07:00","Code Switch / Life Kit"],["08:00","Weekend Edition"],["10:00","Wait Wait… Don’t Tell Me!"],["11:00","This American Life"],["12:00","It’s Been a Minute / Wild Card"],["13:00","On the Media"],["14:00","Left, Right & Center"],["15:00","Planet Money / How I Built This"],["16:00","BBC World Service"],["17:00","All Things Considered"],["18:00","The Moth Radio Hour"],["19:00","Snap Judgment"],["20:00","TED Radio Hour"],["21:00","Fresh Air Weekend"],["22:00","BBC World Service"]]},
+      {"days":[0],"shows":[["05:00","Reveal"],["06:00","The Newsroom"],["06:30","The Allegheny Front"],["07:00","The Pulse"],["08:00","Weekend Edition"],["10:00","Hidden Brain"],["11:00","The Spark Weekly"],["12:00","Wait Wait… Don’t Tell Me!"],["13:00","The Splendid Table"],["14:00","Throughline"],["15:00","Latino USA"],["16:00","BBC World Service"],["17:00","All Things Considered"],["18:00","Freakonomics Radio"],["19:00","The New Yorker Radio Hour"],["20:00","BBC World Service"]]}
+    ]
+  }
+}

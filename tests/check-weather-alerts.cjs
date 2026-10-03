@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const nodes={};const node=()=>({children:[],setAttribute(){},append(...x){this.children.push(...x)},replaceChildren(){this.children=[]},showModal(){this.open=true},close(){this.open=false}});
+const ctx={Date,preferences:{place:{name:'Lititz, PA'}},zone:'America/New_York',$:id=>nodes[id]??=node(),document:{createElement:node},setInterval(){},window:{}};ctx.window.parent=ctx.window;vm.createContext(ctx);vm.runInContext(fs.readFileSync('assets/weather-alerts.js','utf8'),ctx);
+const feature=(severity,extra={})=>({properties:{status:'Actual',severity,event:severity,expires:'2099-01-01T00:00:00Z',...extra}});
+const alerts=ctx.activeWeatherAlerts({data:{features:[feature('Minor'),feature('Severe'),feature('Extreme',{status:'Test'}),feature('Extreme',{messageType:'Cancel'}),feature('Extreme',{expires:'2000-01-01'})]}});
+assert.deepEqual(Array.from(alerts,a=>a.severity),['Severe','Minor']);
+assert.equal(ctx.displayedWeatherAlerts().length,0);assert(nodes['weather-alert-button'].hidden);
+ctx.renderWeatherAlerts({data:{features:[feature('Severe')]}});assert(!nodes['weather-alert-button'].hidden);assert.equal(nodes['weather-alert-count'].textContent,'ALERT');ctx.showWeatherAlerts(ctx.displayedWeatherAlerts(),false);assert(nodes['weather-alert-dialog'].open);assert(nodes['weather-alert-details'].children.length);
+ctx.renderWeatherAlerts({data:{features:[]}});assert(nodes['weather-alert-button'].hidden);
+ctx.preferences.place=null;ctx.renderWeatherAlerts({data:{features:[feature('Severe')]}});assert(nodes['weather-alert-button'].hidden);
+console.log('PASS: real feed rendering, no synthetic alerts, active/expired/test/cancel filtering, severity order, empty feed hides icon, modal rendering, unset location');

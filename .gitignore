@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+Thumbs.db
+
+# Local recordings, screenshots, stream captures, and scratch diagnostics.
+/research/*
+!/research/radio-locations.json
+!/research/radio-stream-checks.json
+!/research/local-radio-candidates.json
+/tools/gpu-spike.html

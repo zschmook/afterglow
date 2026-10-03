@@ -1,0 +1,1 @@
+const requestedPanel=new URLSearchParams(location.search).get('panel');const embeddedPanel=['weather','forecast','news','scores','quotes','system','radio'].includes(requestedPanel)?requestedPanel:null;if(embeddedPanel)document.documentElement.classList.add('embedded-panel','embed-'+embeddedPanel);
