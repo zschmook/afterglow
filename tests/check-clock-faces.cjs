@@ -95,10 +95,49 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
   }
   await page.locator('#rectangular-clock').screenshot({path:path.resolve('research/rectangular-face.png')});
   await page.locator('#rectangular-clock').screenshot({path:path.resolve('research/hamilton-face.png')});
+  await page.locator('#clock-options').click();await page.locator('#clock-face').selectOption('skeleton');await page.locator('#close-clock-options').click();
+  await page.waitForFunction(()=>document.querySelector('#sf-hour').hasAttribute('transform'));
+  assert(await page.locator('#skeleton-clock').isVisible());assert(!(await page.locator('#rectangular-clock').isVisible()));
+  for(const [silver,classic] of [['sf-hour','hour-hand'],['sf-minute','minute-hand']]){
+   assert(await page.evaluate(([a,b])=>document.getElementById(a).getAttribute('transform')===document.getElementById(b).getAttribute('transform'),[silver,classic]));
+  }
+  const silverGear=page.locator('#skeleton-clock .sf-gear').first(),silverBalance=page.locator('#skeleton-clock .sf-balance');
+  const silverInitial=await silverGear.evaluate(e=>getComputedStyle(e).transform);
+  await page.waitForFunction(old=>getComputedStyle(document.querySelector('#skeleton-clock .sf-gear')).transform!==old,silverInitial);
+  const balanceInitial=await silverBalance.evaluate(e=>getComputedStyle(e).transform);
+  await page.waitForFunction(old=>getComputedStyle(document.querySelector('#skeleton-clock .sf-balance')).transform!==old,balanceInitial);
+  await page.reload({waitUntil:'domcontentloaded'});assert(await page.locator('#skeleton-clock').isVisible());
+  await page.waitForFunction(()=>document.querySelector('#skeleton-clock').getAttribute('aria-label').includes(document.querySelector('#digital').textContent.trim()));
+  await page.locator('#calendar-toggle').click();assert(!(await page.locator('#skeleton-clock').isVisible()));
+  assert.equal(await silverGear.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+  await page.locator('#calendar-back').click();assert(await page.locator('#skeleton-clock').isVisible());
+  assert.equal(await silverGear.evaluate(e=>getComputedStyle(e).animationPlayState),'running');
+  for(const content of ['system','m3u']){
+   await page.locator('#clock-options').click();await page.locator('#center-content').selectOption(content);
+   assert(!(await page.locator('#skeleton-clock').isVisible()));
+   assert.equal(await silverBalance.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+   await page.locator('#clock-options').click();await page.locator('#center-content').selectOption('clock');
+   assert(await page.locator('#skeleton-clock').isVisible());
+  }
+  await page.emulateMedia({reducedMotion:'reduce'});
+  assert.equal(await silverGear.evaluate(e=>getComputedStyle(e).animationName),'none');
+  assert.equal(await silverBalance.evaluate(e=>getComputedStyle(e).animationName),'none');
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  for(const size of [{width:390,height:844},{width:1920,height:720},{width:1280,height:540},{width:1500,height:950}]){
+   await page.setViewportSize(size);
+   const face=await page.locator('#skeleton-clock').boundingBox(),panel=await page.locator('#clock-panel').boundingBox();
+   assert(face.x>=panel.x&&face.y>=panel.y&&face.x+face.width<=panel.x+panel.width+1&&face.y+face.height<=panel.y+panel.height+1,JSON.stringify({size,face,panel}));
+   for(const id of ['digital','calendar-toggle','open-alarm','open-home'])assert(await page.locator('#'+id).isVisible());
+   assert(await page.locator('#digital').evaluate(e=>{const r=e.getBoundingClientRect();return !!document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('#calendar-toggle');}));
+   await page.locator('#clock-panel').screenshot({path:path.resolve(`research/skeleton-panel-${size.width}.png`)});
+  }
+  await page.locator('#skeleton-clock').screenshot({path:path.resolve('research/skeleton-face.png')});
   await page.locator('#clock-options').click();await page.locator('#clock-face').selectOption('classic');await page.locator('#close-clock-options').click();
   assert(await page.locator('#clock').isVisible());assert(!(await page.locator('#mechanical-clock').isVisible()));
   assert(!(await page.locator('#aviation-clock').isVisible()));
   assert(!(await page.locator('#rectangular-clock').isVisible()));
+  assert(!(await page.locator('#skeleton-clock').isVisible()));
+  assert.equal(await silverGear.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
   assert.deepEqual(errors,[]);
   console.log('PASS: face selection/persistence, animated gears/balances, synchronized hands and zoned date, 24-hour time, calendar/stats return, reduced motion, responsive layout, classic preserved');
  }finally{await browser.close();}

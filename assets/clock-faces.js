@@ -89,21 +89,24 @@
   classic.after(dial);
   const choice=$('clock-face');
   function selectFace(){
-    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular';
-    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular);dial.toggleAttribute('hidden',!mechanical);
+    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton';
+    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton);dial.toggleAttribute('hidden',!mechanical);
     window.AviationFace.dial.toggleAttribute('hidden',!aviation);
     window.RectangularFace.dial.toggleAttribute('hidden',!rectangular);
+    window.SkeletonFace.dial.toggleAttribute('hidden',!skeleton);
     $('clock-panel').classList.toggle('mechanical-face-selected',mechanical);
     $('clock-panel').classList.toggle('aviation-face-selected',aviation);
     $('clock-panel').classList.toggle('rectangular-face-selected',rectangular);
+    $('clock-panel').classList.toggle('skeleton-face-selected',skeleton);
   }
-  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
+  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
   document.addEventListener('visibilitychange',()=>dial.classList.toggle('mf-paused',document.hidden));
   dial.classList.toggle('mf-paused',document.hidden);
   let stamp='';
   window.MechanicalFace={tick(now,h,m,s,digital,timeZone){
     window.AviationFace.tick(now,h,m,s,digital,timeZone);
     window.RectangularFace.tick(now,h,m,s,digital,timeZone);
+    window.SkeletonFace.tick(now,h,m,s,digital,timeZone);
     if(dial.hasAttribute('hidden')||preferences.centerContent!=='clock'||$('clock-panel').classList.contains('show-calendar'))return;
     $('mf-hour').setAttribute('transform',`rotate(${h*30} 200 200)`);
     $('mf-minute').setAttribute('transform',`rotate(${m*6} 200 200)`);
