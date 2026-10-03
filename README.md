@@ -26,6 +26,12 @@ MPEG-TS entries ending in `.ts`, `.m2ts`, or `/mpegts` use locally bundled [mpeg
 
 Validation: playlist/parser and same-origin endpoint tests use isolated local servers. Browser regression checks actual audio/video decoding, inline playback, expand/collapse continuity, card replacement, saved state, errors, and desktop/tablet/mobile layouts. A public HLS stream was also verified in muted Chrome. Additional tests cover channel metadata, real MPEG-TS decoding through an isolated byte relay, changing channels while expanded, and upstream cleanup on Stop. The M3U fetch endpoint requires restarting the native dashboard after this backend update, subject to the user's per-operation restart approval.
 
+## Alarm and timer sounds
+
+After **Set alarm** or **Start timer**, choose **Silent**, **Gentle chime**, or **Noisy bitch** in the sound picker, optionally preview it and adjust alert volume, then confirm. The timer starts counting when confirmed. Closing the picker cancels the pending change. Each alarm/timer remembers its own sound choice; the first choice defaults to Silent. Audible alerts repeat until dismissed or canceled, independently of radio/M3U volume, and simultaneous alerts remain independently dismissible through their Cancel controls. Sounds are synthesized locally with no extra downloads.
+
+Keep the dashboard open and the phone awake: browser alarms cannot reliably wake a locked/sleeping phone or run after the page closes. Device media volume still applies. After a reload, browsers may require a tap to enable sound again; visual alerts remain available. Frontend-only update: refresh the dashboard, with no service restart required.
+
 ## Future Android APK
 
 Package the dashboard as an Android APK for a tablet or dedicated touchscreen. Leave out the system stats card on Android. Keep the responsive cards, clock/calendar, weather/news, alarms, radio, and custom M3U audio/video playback. This is a future idea only; no APK implementation has started. Packaging size and the approach to the Python feed/playlist backend still need evaluation.
