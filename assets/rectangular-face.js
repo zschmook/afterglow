@@ -14,7 +14,7 @@
   const positions=[[12,200,89],[1,271,89],[2,280,150],[3,281,211],[4,279,271],[5,271,337],[7,129,337],[8,121,271],[9,119,211],[10,123,150],[11,129,89]];
   const numbers=positions.map(([n,x,y])=>`<text x="${x}" y="${y}" class="rf-number">${n}</text>`).join('');
   dial.innerHTML=`<defs>
-    <linearGradient id="rf-painted-gold" x2=".6" y2="1"><stop stop-color="#b18e4c"/><stop offset=".55" stop-color="#a78240"/><stop offset="1" stop-color="#99743a"/></linearGradient>
+    <linearGradient id="rf-painted-gold" x2=".6" y2="1"><stop stop-color="#c9ac62"/><stop offset=".55" stop-color="#ba963f"/><stop offset="1" stop-color="#aa8534"/></linearGradient>
     <linearGradient id="rf-case" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#765421"/><stop offset=".07" stop-color="#e4c67c"/><stop offset=".16" stop-color="#fff0be"/><stop offset=".25" stop-color="#b98d43"/><stop offset=".5" stop-color="#ead39a"/><stop offset=".75" stop-color="#b58a42"/><stop offset=".9" stop-color="#fff0bd"/><stop offset="1" stop-color="#84622d"/></linearGradient>
     <linearGradient id="rf-bevel" x2=".8" y2="1"><stop stop-color="#fff0b9"/><stop offset=".18" stop-color="#b58b42"/><stop offset=".46" stop-color="#f6e1aa"/><stop offset=".73" stop-color="#8e682c"/><stop offset="1" stop-color="#ead097"/></linearGradient>
     <linearGradient id="rf-gold" x2=".75" y2=".6"><stop stop-color="#847452"/><stop offset=".25" stop-color="#dcc592"/><stop offset=".5" stop-color="#b5a075"/><stop offset=".54" stop-color="#8d7a56"/><stop offset="1" stop-color="#d7c59b"/></linearGradient>
