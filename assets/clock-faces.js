@@ -89,19 +89,21 @@
   classic.after(dial);
   const choice=$('clock-face');
   function selectFace(){
-    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport';
-    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton||sport);dial.toggleAttribute('hidden',!mechanical);
+    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport',calculator=preferences.clockFace==='calculator';
+    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton||sport||calculator);dial.toggleAttribute('hidden',!mechanical);
     window.AviationFace.dial.toggleAttribute('hidden',!aviation);
     window.RectangularFace.dial.toggleAttribute('hidden',!rectangular);
     window.SkeletonFace.dial.toggleAttribute('hidden',!skeleton);
     window.SportFace.dial.toggleAttribute('hidden',!sport);
+    window.CalculatorFace.dial.toggleAttribute('hidden',!calculator);
     $('clock-panel').classList.toggle('mechanical-face-selected',mechanical);
     $('clock-panel').classList.toggle('aviation-face-selected',aviation);
     $('clock-panel').classList.toggle('rectangular-face-selected',rectangular);
     $('clock-panel').classList.toggle('skeleton-face-selected',skeleton);
     $('clock-panel').classList.toggle('sport-face-selected',sport);
+    $('clock-panel').classList.toggle('calculator-face-selected',calculator);
   }
-  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton','sport'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
+  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton','sport','calculator'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
   document.addEventListener('visibilitychange',()=>dial.classList.toggle('mf-paused',document.hidden));
   dial.classList.toggle('mf-paused',document.hidden);
   let stamp='';
@@ -110,6 +112,7 @@
     window.RectangularFace.tick(now,h,m,s,digital,timeZone);
     window.SkeletonFace.tick(now,h,m,s,digital,timeZone);
     window.SportFace.tick(now,h,m,s,digital,timeZone);
+    window.CalculatorFace.tick(now,h,m,s,digital,timeZone);
     if(dial.hasAttribute('hidden')||preferences.centerContent!=='clock'||$('clock-panel').classList.contains('show-calendar'))return;
     $('mf-hour').setAttribute('transform',`rotate(${h*30} 200 200)`);
     $('mf-minute').setAttribute('transform',`rotate(${m*6} 200 200)`);
