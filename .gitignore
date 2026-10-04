@@ -17,3 +17,6 @@ Thumbs.db
 !/research/radio-stream-checks.json
 !/research/local-radio-candidates.json
 /tools/gpu-spike.html
+
+# Install licensed recordings locally; do not redistribute them with source.
+/assets/alarm-sounds/*.wav

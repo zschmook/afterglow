@@ -28,7 +28,9 @@ Validation: playlist/parser and same-origin endpoint tests use isolated local se
 
 ## Alarm and timer sounds
 
-After **Set alarm** or **Start timer**, choose **Silent**, **Gentle chime**, or **Noisy bitch** in the sound picker, optionally preview it and adjust alert volume, then confirm. The timer starts counting when confirmed. Closing the picker cancels the pending change. Each alarm/timer remembers its own sound choice; the first choice defaults to Silent. Audible alerts repeat until dismissed or canceled, independently of radio/M3U volume, and simultaneous alerts remain independently dismissible through their Cancel controls. Sounds are synthesized locally with no extra downloads.
+After **Set alarm** or **Start timer**, choose **Silent** or one of five Mixkit recordings: **Facility alarm sound**, **Digital clock digital alarm buzzer**, **Vintage warning alarm**, **Emergency alert alarm**, or **Classic alarm** in the sound picker, optionally preview it and adjust alert volume, then confirm. The timer starts counting when confirmed. Closing the picker cancels the pending change. Each alarm/timer remembers its own sound choice; the first choice defaults to Silent. Audible alerts repeat until dismissed or canceled, independently of radio/M3U volume, and simultaneous alerts remain independently dismissible through their Cancel controls. Preview plays the original recording once; Stop preview ends it immediately. The chosen recording is loaded before confirmation so missing audio cannot silently arm an audible alert.
+
+Install recordings once with `python tools/fetch_alarm_sounds.py`. They then play locally without contacting Mixkit. Licensed WAV files are excluded from source control; see [recording provenance and license](assets/alarm-sounds/README.md).
 
 Keep the dashboard open and the phone awake: browser alarms cannot reliably wake a locked/sleeping phone or run after the page closes. Device media volume still applies. After a reload, browsers may require a tap to enable sound again; visual alerts remain available. Frontend-only update: refresh the dashboard, with no service restart required.
 

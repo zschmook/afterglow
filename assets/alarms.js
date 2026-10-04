@@ -1,16 +1,19 @@
 if(typeof embeddedPanel==='undefined'||!embeddedPanel){
 const alarmStorage='dashboard-alarms';
 let alarms={alarm:null,timer:null,ringing:[],ringingSounds:{},sounds:{alarm:'silent',timer:'silent'},volume:0.6};
-const soundNames={silent:'Silent',timer:'Gentle chime',alarm:'Noisy bitch'};
-function validSound(value){return Object.hasOwn(soundNames,value)?value:'silent';}
+const soundNames={silent:'Silent',...afterglowAlarmSounds};
+function validSound(value){value=({alarm:'classic',timer:'digital'})[value]||value;return Object.hasOwn(soundNames,value)?value:'silent';}
 try{const saved=JSON.parse(localStorage.getItem(alarmStorage)||'null');if(saved){for(const key of ['alarm','timer']){if(Number.isFinite(saved[key]?.due))alarms[key]={...saved[key],sound:validSound(saved[key].sound)};alarms.sounds[key]=validSound(saved.sounds?.[key]);alarms.ringingSounds[key]=validSound(saved.ringingSounds?.[key]);}alarms.ringing=(saved.ringing||[]).filter(x=>x==='alarm'||x==='timer');if(Number.isFinite(saved.volume))alarms.volume=Math.max(0,Math.min(1,saved.volume));}}catch{}
 let pendingAlert=null;
 function saveAlarms(){try{localStorage.setItem(alarmStorage,JSON.stringify(alarms));}catch{}}
 function showSoundState(){
  const state=alertSound?.state||'unsupported';
  const silent=$('alert-sound-choice').value==='silent';
- $('alert-sound-status').textContent=silent?'Visual alert only.':state==='muted'?'Volume is zero. Alerts will still flash.':state==='unsupported'?'Sound is unavailable in this browser. Alerts will still flash.':state==='ready'?'Sound ready.':'Tap Preview or Confirm to enable sound.';
- $('test-alert-sound').disabled=silent||alarms.ringing.length>0||!alertSound;
+ $('alert-sound-status').textContent=silent?'Visual alert only.':state==='muted'?'Volume is zero. Alerts will still flash.':state==='unsupported'?'Sound is unavailable in this browser. Alerts will still flash.':state==='loading'?'Loading recording…':state==='error'?'Could not load the recording. Try Preview again or choose Silent.':state==='ready'?'Sound ready.':'Tap Preview or Confirm to enable sound.';
+ $('test-alert-sound').disabled=silent||alarms.ringing.length>0||!alertSound||!!pendingAlert?.confirming;
+ $('test-alert-sound').textContent=alertSound?.previewing?'Stop preview':'Preview';
+ $('confirm-alert-sound').disabled=!!pendingAlert?.confirming;
+ $('alert-sound-choice').disabled=!!pendingAlert?.confirming;
  $('alert-volume-controls').hidden=silent;
 }
 const alertSound=typeof AfterglowAlertSound==='function'?new AfterglowAlertSound(showSoundState):null;
@@ -18,7 +21,7 @@ alertSound?.setVolume(alarms.volume);
 $('alert-volume').value=String(Math.round(alarms.volume*100));
 $('alert-volume-value').textContent=Math.round(alarms.volume*100)+'%';
 $('alert-volume').oninput=e=>{alarms.volume=Number(e.target.value)/100;alertSound?.setVolume(alarms.volume);$('alert-volume-value').textContent=Math.round(alarms.volume*100)+'%';saveAlarms();};
-$('test-alert-sound').onclick=()=>alertSound?.preview($('alert-sound-choice').value);
+$('test-alert-sound').onclick=()=>{if(alertSound?.previewing)alertSound.stopPreview();else void alertSound?.preview($('alert-sound-choice').value);};
 $('alert-sound-choice').onchange=()=>{alertSound?.stopPreview();showSoundState();};
 function chooseAlertSound(details){
  pendingAlert=details;
@@ -32,12 +35,17 @@ function closeSoundPicker(){pendingAlert=null;alertSound?.stopPreview();$('alert
 $('close-alert-sound').onclick=closeSoundPicker;
 $('alert-sound-dialog').addEventListener('cancel',closeSoundPicker);
 $('alert-sound-dialog').addEventListener('close',()=>{pendingAlert=null;alertSound?.stopPreview();});
-$('alert-sound-form').onsubmit=e=>{
- e.preventDefault();if(!pendingAlert)return;
- const {kind,time,seconds}=pendingAlert,sound=validSound($('alert-sound-choice').value);
+$('alert-sound-form').onsubmit=async e=>{
+ e.preventDefault();if(!pendingAlert||pendingAlert.confirming)return;
+ const pending=pendingAlert,{kind,time,seconds}=pending,sound=validSound($('alert-sound-choice').value);
+ if(sound!=='silent'){
+  pending.confirming=true;showSoundState();
+  const ready=await alertSound?.prepare(sound);
+  pending.confirming=false;showSoundState();
+  if(pendingAlert!==pending||!ready)return;
+ }
  const due=kind==='alarm'?nextAlarm(time,zone):Date.now()+seconds*1000;
  if(!due)return;
- if(sound!=='silent')unlockAlertSound();
  alarms[kind]=kind==='alarm'?{due,time,zone,sound}:{due,sound};
  alarms.sounds[kind]=sound;
  alarms.ringing=alarms.ringing.filter(x=>x!==kind);
