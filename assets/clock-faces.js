@@ -89,14 +89,16 @@
   classic.after(dial);
   const choice=$('clock-face');
   function selectFace(){
-    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport',calculator=preferences.clockFace==='calculator',hp12c=preferences.clockFace==='hp12c';
-    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton||sport||calculator||hp12c);dial.toggleAttribute('hidden',!mechanical);
+    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport',calculator=preferences.clockFace==='calculator',hp12c=preferences.clockFace==='hp12c',ti84=preferences.clockFace==='ti84';
+    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton||sport||calculator||hp12c||ti84);dial.toggleAttribute('hidden',!mechanical);
     window.AviationFace.dial.toggleAttribute('hidden',!aviation);
     window.RectangularFace.dial.toggleAttribute('hidden',!rectangular);
     window.SkeletonFace.dial.toggleAttribute('hidden',!skeleton);
     window.SportFace.dial.toggleAttribute('hidden',!sport);
     window.CalculatorFace.dial.toggleAttribute('hidden',!calculator);
     window.HP12Face.dial.toggleAttribute('hidden',!hp12c);
+    window.TI84Face.dial.toggleAttribute('hidden',!ti84);
+    $('clock-panel').classList.toggle('ti84-face-selected',ti84);
     $('clock-panel').classList.toggle('mechanical-face-selected',mechanical);
     $('clock-panel').classList.toggle('aviation-face-selected',aviation);
     $('clock-panel').classList.toggle('rectangular-face-selected',rectangular);
@@ -105,7 +107,7 @@
     $('clock-panel').classList.toggle('calculator-face-selected',calculator);
     $('clock-panel').classList.toggle('hp12c-face-selected',hp12c);
   }
-  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton','sport','calculator','hp12c'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
+  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton','sport','calculator','hp12c','ti84'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
   document.addEventListener('visibilitychange',()=>dial.classList.toggle('mf-paused',document.hidden));
   dial.classList.toggle('mf-paused',document.hidden);
   let stamp='';

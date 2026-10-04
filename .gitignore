@@ -20,3 +20,7 @@ Thumbs.db
 
 # Install licensed recordings locally; do not redistribute them with source.
 /assets/alarm-sounds/*.wav
+
+# User-supplied calculator firmware stays local.
+/calc roms/
+/assets/ti84-roms/

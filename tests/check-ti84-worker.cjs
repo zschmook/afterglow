@@ -1,0 +1,17 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+(async()=>{
+  let tick,cycles=0;const keys=[],messages=[];
+  const core={HEAPU8:new Uint8Array(2097153),_ag_init:()=>1,_ag_rate:()=>6000000,_ag_tick:n=>cycles+=n,_ag_key:(...k)=>keys.push(k),_ag_frame:()=>0,_ag_on:()=>1};
+  const context={ArrayBuffer,Uint8Array,importScripts:()=>{},AfterglowZ80:async()=>core,postMessage:m=>messages.push(m),setInterval:f=>{tick=f;return 1;},clearInterval:()=>{}};
+  vm.createContext(context);vm.runInContext(fs.readFileSync('assets/ti84-worker.js','utf8'),context);
+  const send=data=>context.onmessage({data});
+  await send({type:'load',rom:new ArrayBuffer(4194304)});assert.equal(messages.at(-1).type,'error');
+  await send({type:'load',rom:new ArrayBuffer(1048576)});assert.equal(messages.at(-1).type,'loaded');
+  tick();assert.equal(cycles,0,'Hidden calculator must not consume CPU');
+  await send({type:'pause',paused:false});await send({type:'key',code:0x31});tick();assert.equal(cycles,200000);assert.deepEqual(keys.at(-1),[0x31,1]);
+  await send({type:'pause',paused:true});assert.deepEqual(keys.at(-1),[0x31,0],'Hiding releases held key');
+  const count=cycles;for(let i=0;i<100;i++)tick();assert.equal(cycles,count);
+  await send({type:'pause',paused:false});for(let i=0;i<12;i++)tick();assert.equal(keys.filter(k=>k[0]===0x31&&k[1]===1).length,1,'Paused queue cannot replay stale key');
+  assert.ok(messages.some(m=>m.type==='frame'&&m.pixels.length===6144));
+  console.log('TI worker: ROM validation, paused CPU, key release, cleared queue, framebuffer passed.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

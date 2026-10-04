@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');
+const Math84=require('../assets/ti84-engine.js');
+const close=(actual,expected)=>assert.ok(Math.abs(actual-expected)<1e-9,`${actual} != ${expected}`);
+for(const [s,value] of [['2+3*4',14],['-2^2',-4],['(-2)^2',4],['2^3^2',64],['2(3+4)',14],['5!',120],['nCr(10,3)',120],['sqrt(9)+log(100)',5],['1E3/4',250]])close(Math84.compile(s)(),value);
+close(Math84.compile('sin(30)','DEG')(),.5);
+close(Math84.compile('X^2+Ans+A')(3,{Ans:2,A:4}),15);
+assert.ok(Number.isNaN(Math84.compile('sqrt(-1)')()));
+assert.throws(()=>Math84.compile('fetch(1)'));
+assert.throws(()=>Math84.compile('window.location'));
+assert.throws(()=>Math84.compile('('.repeat(50)+'1'+')'.repeat(50)));
+const w={xmin:-10,xmax:10,ymin:-10,ymax:10};
+assert.ok(Math84.windowValid(w));assert.ok(!Math84.windowValid({...w,xmin:10}));
+const segments=Math84.sample(Math84.compile('1/X'),w);
+assert.ok(segments.length>=2);assert.ok(segments.every(segment=>!(segment[0][0]<0&&segment.at(-1)[0]>0)));
+close(Math84.zero(Math84.compile('X^2-2'),0,2),Math.SQRT2);
+assert.throws(()=>Math84.zero(Math84.compile('1/X'),-1,1));
+console.log('TI-84 demo arithmetic, limits, domains, graph discontinuities and root finding passed.');
