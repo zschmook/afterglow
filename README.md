@@ -156,6 +156,14 @@ The stack, registers, cash flows, entry and display settings persist per browser
 
 Validation: `node tests/check-hp12c.cjs` covers RPN stack behavior, error recovery, continuous memory, all five TVM solutions, begin/end and zero interest, depreciation, statistics, dates and published manual examples (mortgage/amortization, NPV and IRR). This is a static asset update; reload the dashboard, with no server restart required.
 
+## TI-89 graphing calculator
+
+Center gear → **Watch face → Graphing calculator · TI-89** adds the classic charcoal TI-89 with a working keypad, native LCD, keyboard input, expanded view and an official manual link. It runs the original calculator software in a separate browser worker: symbolic algebra, graphing and the TI menus come from your ROM. Use **◆ then F1** for Y= and **◆ then F3** for GRAPH.
+
+Install your own classic 2 MiB ROM at `assets/ti89-roms/ti89.rom`, or tap **Import ROM**. ROMs are excluded from Git and Docker; importing remembers the ROM in that browser when storage is available. Switching faces pauses the calculator and retains its current session. Reloading starts it fresh, so calculator RAM is not saved across reloads. Titanium and TI-92 ROMs are not supported by this face. Program import/export is not implemented yet.
+
+Reload the dashboard to get the new face; no server restart is needed. Emulator source, GPL license, local patches and test commands are documented in [`assets/vendor/ti68k/README.md`](assets/vendor/ti68k/README.md).
+
 ## Keep display awake
 
 Settings → Display → **Keep display awake** remembers the choice in this browser. HTTPS/localhost uses the native Screen Wake Lock API. Ordinary HTTP LAN URLs or browsers without that API use tiny local, silent NoSleep videos (MIT license in `assets/vendor/nosleep`). Native permission/power failures show a retry state rather than silently claiming success. The visible status distinguishes native wake lock from the video workaround.
