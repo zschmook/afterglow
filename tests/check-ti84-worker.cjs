@@ -8,7 +8,11 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
   await send({type:'load',rom:new ArrayBuffer(4194304)});assert.equal(messages.at(-1).type,'error');
   await send({type:'load',rom:new ArrayBuffer(1048576)});assert.equal(messages.at(-1).type,'loaded');
   tick();assert.equal(cycles,0,'Hidden calculator must not consume CPU');
-  await send({type:'pause',paused:false});await send({type:'key',code:0x31});tick();assert.equal(cycles,200000);assert.deepEqual(keys.at(-1),[0x31,1]);
+  await send({type:'pause',paused:false});
+  await send({type:'key',code:0x31});tick();assert.ok(!keys.some(k=>k[0]===0x31),'Do not accept keys during boot/install');
+  for(let i=1;i<100;i++)tick();assert.equal(messages.at(-2).type,'booted');
+  const bootCycles=cycles;
+  await send({type:'key',code:0x31});tick();assert.equal(cycles,bootCycles+200000);assert.deepEqual(keys.at(-1),[0x31,1]);
   await send({type:'pause',paused:true});assert.deepEqual(keys.at(-1),[0x31,0],'Hiding releases held key');
   const count=cycles;for(let i=0;i<100;i++)tick();assert.equal(cycles,count);
   await send({type:'pause',paused:false});for(let i=0;i<12;i++)tick();assert.equal(keys.filter(k=>k[0]===0x31&&k[1]===1).length,1,'Paused queue cannot replay stale key');

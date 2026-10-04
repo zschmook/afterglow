@@ -24,3 +24,4 @@ Thumbs.db
 # User-supplied calculator firmware stays local.
 /calc roms/
 /assets/ti84-roms/
+/assets/ti84-programs/
