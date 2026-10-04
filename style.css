@@ -68,3 +68,6 @@ body{padding-top:16px}footer{height:52px;min-height:52px}footer .toolbar{margin-
 .center-system-selected .clock-top{order:-1;flex-shrink:0}
 .center-system-selected .clock-timer{position:static;align-self:flex-start;flex-shrink:0;margin:12px 16px 0}
 .news .panel-heading{align-items:flex-start;flex-wrap:wrap;row-gap:6px}.news .news-brand{white-space:normal;overflow-wrap:anywhere;text-align:right;font-size:.8rem;max-width:100%}.news .panel-foot{align-items:flex-start;gap:12px}.news #news-status{min-width:0;overflow-wrap:anywhere}.news #news-count{white-space:nowrap}#settings-panel-news{max-height:52vh;overflow:auto;scrollbar-width:thin}
+
+#keep-awake-video{position:fixed;bottom:0;left:0;width:1px;height:1px;opacity:.001;pointer-events:none}
+#keep-awake-help,#keep-awake-status{font-size:.85rem;line-height:1.5}
