@@ -148,6 +148,14 @@ The **Aviation · three subdials** face adds a dark instrument dial, cream secon
 
 **Silver skeleton · open movement** adds a pale silver chapter ring, faceted hour markers and hands, curved bridges, ruby bearings, and a large balance wheel at the lower left. The exposed gears turn at different speeds and the balance oscillates behind the timekeeping hands. Choose it under the center gear → Watch face. It uses the dashboard time zone and remembers the selection; decorative movement pauses when hidden and respects reduced-motion settings. Refresh to load this face; a service restart is not required.
 
+## HP 12C financial calculator
+
+Center gear → **Watch face → Financial calculator · HP 12C**. This independent browser implementation follows the classic gold/black layout, with a four-level RPN stack, one-shot gold/blue shifts, financial registers, 20 numbered memory registers, grouped cash flows, NPV/IRR, whole-period TVM, amortization, depreciation, statistics and date arithmetic. The toolbar includes the [original HP manual](https://h10032.www1.hp.com/ctg/Manual/c00363319.pdf), a quick guide with worked keystrokes, and an expanded view. Narrow screens can scroll the expanded keypad horizontally. The existing clock, alarm, calendar and Home controls remain available.
+
+The stack, registers, cash flows, entry and display settings persist per browser under `afterglow-hp12c-v1`; storage failures do not prevent calculating. It is an adaptation, not a ROM emulator: programming and bond functions are disabled, fractional/odd-period TVM is rejected explicitly, and arithmetic uses JavaScript precision rather than HP BCD rounding. Cash-flow storage is separate from numbered registers; `g MEM` shows a register summary. IRR searches for a root near the stored interest guess and does not enumerate all possible roots.
+
+Validation: `node tests/check-hp12c.cjs` covers RPN stack behavior, error recovery, continuous memory, all five TVM solutions, begin/end and zero interest, depreciation, statistics, dates and published manual examples (mortgage/amortization, NPV and IRR). This is a static asset update; reload the dashboard, with no server restart required.
+
 ## Keep display awake
 
 Settings → Display → **Keep display awake** remembers the choice in this browser. HTTPS/localhost uses the native Screen Wake Lock API. Ordinary HTTP LAN URLs or browsers without that API use tiny local, silent NoSleep videos (MIT license in `assets/vendor/nosleep`). Native permission/power failures show a retry state rather than silently claiming success. The visible status distinguishes native wake lock from the video workaround.
