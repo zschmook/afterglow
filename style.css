@@ -71,3 +71,6 @@ body{padding-top:16px}footer{height:52px;min-height:52px}footer .toolbar{margin-
 
 #keep-awake-video{position:fixed;bottom:0;left:0;width:1px;height:1px;opacity:.001;pointer-events:none}
 #keep-awake-help,#keep-awake-status{font-size:.85rem;line-height:1.5}
+
+/* These characters have their own hop / bedtime rocking inside the SVG. */
+#weather-icon[src*="/partly-cloudy-day.svg"],#weather-icon[src*="/partly-cloudy-night.svg"],#forecast .day img[src*="/partly-cloudy-day.svg"],#forecast .day img[src*="/partly-cloudy-night.svg"]{animation:none}
