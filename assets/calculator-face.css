@@ -33,3 +33,5 @@
 .cw-segments .cw-space{width:8px;flex-shrink:0}
 #cw-display.cw-binary .cw-segments{height:6cqw;min-height:20px;gap:1px}
 .cw-context{text-overflow:ellipsis}
+.cw-brand .cw-manual{display:inline-flex;align-items:center;min-height:44px;margin:-13px 0;padding:0 3px;color:#cfc38a;font:700 2.9cqw Arial,sans-serif;letter-spacing:.03em;text-decoration:underline;text-underline-offset:3px;touch-action:manipulation}
+.cw-brand .cw-manual:hover{color:#fff4b6}.cw-brand .cw-manual:focus-visible{outline:2px solid #faf0a6;outline-offset:1px}

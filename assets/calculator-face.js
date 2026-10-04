@@ -15,7 +15,7 @@
   const accessible={'/':'Divide','*':'Multiply','-':'Subtract','+':'Add','=':'Equals','.':'Decimal point',sign:'Change sign',reciprocal:'Reciprocal',sqrt:'Square root',square:'Square',factorial:'Factorial','^':'Power',root:'Nth root',Min:'Store memory',MR:'Recall memory','M+':'Add to memory','M-':'Subtract from memory',DEL:'Delete digit',pi:'Pi','(':'Open parenthesis',')':'Close parenthesis',DMS:'Degrees to degrees minutes seconds'};
   dial.innerHTML=`<div class="cw-case">
     <div class="cw-bezel">
-      <div class="cw-brand"><b>CASIO</b><span>CFX-400</span></div>
+      <div class="cw-brand"><b>CASIO</b><a class="cw-manual" href="https://www.digital-watch.com/images/casio_manuals/463-module.pdf" target="_blank" rel="noopener noreferrer" aria-label="Casio CFX-400 manual (PDF, opens in new tab)">CFX-400 · MANUAL ↗</a></div>
       <div class="cw-lcd">
         <div class="cw-indicators"><span id="cw-mode">TIME</span><span id="cw-angle"></span><span id="cw-memory"></span><span id="cw-layer"></span></div>
         <div id="cw-context" class="cw-context"></div>
