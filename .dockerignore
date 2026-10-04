@@ -1,4 +1,7 @@
 .git
+.venv/
+data/
+tests/
 __pycache__
 *.md
 assets/weather-icons/amcharts

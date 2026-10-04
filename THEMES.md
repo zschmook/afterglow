@@ -23,3 +23,7 @@ This records the design choice only; no theme or application framework has been 
 | daisyUI Retro | https://daisyui.com/docs/themes/ | Warm vintage palette. |
 
 Other sources researched: the broader [Bootswatch collection](https://bootswatch.com/) and [Tabler](https://tabler.io/admin-template). Tabler was not part of the final theme shortlist.
+
+## Built-in theme selection
+
+Settings → Display now offers Midnight (navy / ice blue), Hearth (walnut / amber), and Afterglow (the original purple neon palette). Midnight is the default. The choice is stored in browser preferences and applies before rendering, including embedded panels. Theme changes preserve playback and do not change the selected watch face. Specialty watch faces retain their own finishes; the Classic clock follows the dashboard palette.

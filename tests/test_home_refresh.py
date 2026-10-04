@@ -15,9 +15,10 @@ class HomeRefreshTests(unittest.TestCase):
         self.assertTrue(request.call_args_list[1].kwargs['fresh'])
 
     def test_cached_state_and_control_readback(self):
-        with patch('server.urlopen', side_effect=[io.BytesIO(b'{"on":true}'),io.BytesIO(b'{"on":false}')]) as upstream:
+        with patch('server.home_devices.light_state', return_value={'on':True}) as reader, patch('server.home_devices.control_light', return_value={'on':False}) as controller:
             server.home_request('/api/home/lights/one/state', fresh=True)
             self.assertTrue(server.home_request('/api/home/lights/one/state')['on'])
             server.home_request('/api/home/lights/one/control', 'POST', {'on':False})
             self.assertFalse(server.home_request('/api/home/lights/one/state')['on'])
-        self.assertEqual(upstream.call_count,2)
+        reader.assert_called_once_with('one')
+        controller.assert_called_once_with('one', {'on':False})

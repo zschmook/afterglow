@@ -3,7 +3,14 @@ if(panelTypes.includes(embeddedPanel)){
  // Widget copies have independent tabs and controls, with no nested dashboards.
  document.querySelector('.'+embeddedPanel).classList.add('embedded-selected');document.querySelector('.'+embeddedPanel).hidden=false;
  document.querySelectorAll('.location-prompt button').forEach(b=>b.onclick=()=>parent.openLocation());
- window.addEventListener('storage',e=>{if(e.key==='dashboard-preferences'||e.key==='ui-scale')location.reload();});
+ window.addEventListener('storage',e=>{
+  if(e.key==='dashboard-preferences'){
+   try{const before={...preferences},after=JSON.parse(e.newValue||'{}');const theme=after.theme;delete before.theme;delete after.theme;
+    if(JSON.stringify(before)===JSON.stringify(after)){preferences.theme=theme;window.applyDashboardTheme?.(theme);return;}
+   }catch{}
+  }
+  if(e.key==='dashboard-preferences'||e.key==='ui-scale')location.reload();
+ });
 }else{
  let layout={};try{layout=JSON.parse(localStorage.getItem('panel-layout')||'{}')||{};}catch{}
  // Repair older layouts that allowed more than one M3U card.

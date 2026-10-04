@@ -26,3 +26,6 @@ Thumbs.db
 /assets/ti84-roms/
 /assets/ti84-programs/
 /assets/ti89-roms/
+
+# Local home device identities and addresses.
+/data/

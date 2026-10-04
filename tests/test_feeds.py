@@ -66,4 +66,17 @@ class FeedTests(unittest.TestCase):
         self.assertTrue(result['stale'])
         self.assertEqual(len(result['data']['events']),1)
 
+    def test_sports_selection_defaults_and_rejects_unknown_feeds(self):
+        self.assertEqual(server.selected_sports({}), ['nfl','ncaa'])
+        self.assertEqual(server.selected_sports({'leagues':['mlb,mls,mlb']}), ['mlb','mls'])
+        for value in ('', 'made-up', 'nfl,https://example.com'):
+            with self.assertRaises(ValueError):
+                server.selected_sports({'leagues':[value]})
+
+    def test_nonfootball_skips_football_team_location_lookup(self):
+        sports={'mls':{'data':{'events':[{'status':{'type':{'state':'in'}},'competitions':[{'competitors':[{'team':{'id':'1'}}]}]}]}}}
+        with patch.object(server,'team_location') as lookup:
+            self.assertEqual(server.add_team_locations(sports),sports)
+        lookup.assert_not_called()
+
 if __name__=='__main__': unittest.main()

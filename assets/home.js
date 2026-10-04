@@ -78,7 +78,7 @@ async function loadHome(discover=false,background=false){
     }
     const scroll=homeGrid.scrollTop;homeGrid.replaceChildren(...sections);homeGrid.scrollTop=scroll;
     homeNotice(`${bulbs.length} bulbs · ${outlets.length} outlets`+(other.length?` · ${other.length} other`:''));
-    if(!sections.length)homeGrid.append(element('p','muted','No devices found. Tap Find all devices to scan your network.'));
+    if(!sections.length)homeGrid.append(element('p','muted','No devices saved yet. Tap Find devices to find supported Kasa bulbs and outlets on your home network.'));
   }catch(error){if(generation===homeGeneration)homeNotice(error.message);}
   finally{homeLock(-1);}
 }

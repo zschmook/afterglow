@@ -1,0 +1,99 @@
+/* Afterglow retains the original Vapor appearance. These palettes apply to the
+   dashboard chrome; specialty watch faces keep their individual designs. */
+:root[data-theme="midnight"] {
+  color-scheme: dark;
+  --ink: #e9f1f8;
+  --muted: #a4b7ca;
+  --pink: #9bbfff;
+  --cyan: #7cc5ff;
+  --edge: #314559;
+  --theme-background: #0d1722;
+  --theme-panel: #152331;
+  --theme-control: #101d2a;
+  --theme-selected: #21364a;
+  --theme-radius: 10px;
+  --theme-face: #152331;
+  --theme-face-edge: #0d1722;
+  --theme-dial-ink: #e9f1f8;
+  --theme-dial-muted: #a4b7ca;
+  --theme-dial-accent: #7cc5ff;
+}
+:root[data-theme="hearth"] {
+  color-scheme: dark;
+  --ink: #f6eddd;
+  --muted: #c6b69f;
+  --pink: #e6bd93;
+  --cyan: #efb872;
+  --edge: #62503e;
+  --theme-background: #241e19;
+  --theme-panel: #342b23;
+  --theme-control: #2b231c;
+  --theme-selected: #493a2b;
+  --theme-radius: 24px;
+  --theme-face: #ede0c8;
+  --theme-face-edge: #e3d0b0;
+  --theme-dial-ink: #342b23;
+  --theme-dial-muted: #62503e;
+  --theme-dial-accent: #8b582c;
+}
+html[data-theme]:not([data-theme="afterglow"]) body {
+  background: var(--theme-background);
+  color: var(--ink);
+  text-shadow: none;
+}
+html[data-theme]:not([data-theme="afterglow"]) body::before { display: none; }
+html[data-theme]:not([data-theme="afterglow"]) .panel {
+  background: var(--theme-panel);
+  border-color: var(--edge);
+  border-radius: var(--theme-radius);
+  box-shadow: none;
+}
+html[data-theme]:not([data-theme="afterglow"]) :is(h1,h2,h3,h4,p,a,span,button,label,output,strong,b) { text-shadow: none; }
+html[data-theme]:not([data-theme="afterglow"]) :is(.panel-heading h2,.eyebrow,#condition,footer) { color: var(--muted); }
+html[data-theme]:not([data-theme="afterglow"]) :is(dialog,#home-dialog,.device-dialog,.radio-browser) {
+  background: var(--theme-panel);
+  border-color: var(--edge);
+  color: var(--ink);
+  border-radius: var(--theme-radius);
+}
+html[data-theme]:not([data-theme="afterglow"]) dialog::backdrop { background: #000a; }
+html[data-theme]:not([data-theme="afterglow"]) :is(#display-dialog,#alarm-dialog,#alert-sound-dialog,#panel-options,#clock-options-dialog,.radio-browser,.m3u,.m3u-expanded) :is(select,input:not([type="checkbox"]):not([type="range"]):not([type="color"])) {
+  background: var(--theme-control);
+  border-color: var(--edge);
+  color: var(--ink);
+}
+html[data-theme]:not([data-theme="afterglow"]) :is(.league-label select,.radio-badge,.radio-badge img,.radio-mini,.radio-mini-volume-popup,.radio-station-row,.device-card,.device-power,.clock-alert,.calendar-day) {
+  background: var(--theme-control);
+  border-color: var(--edge);
+}
+html[data-theme]:not([data-theme="afterglow"]) :is(.home-launch,.radio-toggle,.alarm-form-actions button[type="submit"],.device-card.device-on,.radio-station-selected,.calendar-today) {
+  background: var(--theme-selected);
+  border-color: var(--cyan);
+  color: var(--ink);
+  box-shadow: none;
+}
+html[data-theme]:not([data-theme="afterglow"]) .radio-station-row:hover { border-color: var(--cyan); }
+html[data-theme]:not([data-theme="afterglow"]) .radio-mini .radio-mini-toggle { border-color: var(--edge); }
+html[data-theme]:not([data-theme="afterglow"]) .m3u button { border-color: var(--edge); }
+html[data-theme]:not([data-theme="afterglow"]) .m3u-player .m3u-fullscreen {
+  background: var(--theme-control);
+  border-color: var(--edge);
+}
+html[data-theme]:not([data-theme="afterglow"]) .system-metric progress::-webkit-progress-value { background: var(--cyan); }
+html[data-theme]:not([data-theme="afterglow"]) .system-metric progress::-moz-progress-bar { background: var(--cyan); }
+html[data-theme]:not([data-theme="afterglow"]) :is(.news-items,.score-items,#calendar-days,#weather-alert-details) { scrollbar-color: var(--edge) transparent; }
+html[data-theme]:not([data-theme="afterglow"]) .clock-dot,
+html[data-theme]:not([data-theme="afterglow"]) footer i { box-shadow: none; }
+html[data-theme]:not([data-theme="afterglow"]) #clock { filter: none; }
+html[data-theme]:not([data-theme="afterglow"]) #face stop:first-child { stop-color: var(--theme-face); }
+html[data-theme]:not([data-theme="afterglow"]) #face stop:last-child { stop-color: var(--theme-face-edge); }
+html[data-theme]:not([data-theme="afterglow"]) #clock > circle { stroke: var(--edge); }
+html[data-theme]:not([data-theme="afterglow"]) #clock text { fill: var(--theme-dial-ink); }
+html[data-theme]:not([data-theme="afterglow"]) #ticks line { stroke: var(--theme-dial-muted); }
+html[data-theme]:not([data-theme="afterglow"]) #hour-hand path { fill: var(--theme-dial-ink); }
+html[data-theme]:not([data-theme="afterglow"]) #minute-hand path { fill: var(--theme-dial-accent); }
+html[data-theme]:not([data-theme="afterglow"]) #second-hand line { stroke: var(--theme-dial-accent); }
+html[data-theme]:not([data-theme="afterglow"]) #second-hand circle,
+html[data-theme]:not([data-theme="afterglow"]) #clock > circle:nth-last-child(2) { fill: var(--theme-dial-accent); }
+html[data-theme]:not([data-theme="afterglow"]).embedded-panel body { background: transparent; }
+html[data-theme="hearth"] .quote-body blockquote { font-family: Georgia, serif; }

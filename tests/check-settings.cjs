@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const ids=new Map();const node=()=>({value:'',classList:{toggle(){}},setAttribute(){},focus(){},showModal(){this.open=true;},close(){this.open=false;}});const storage={};let refreshed=0;
-const ctx={$:id=>{if(!ids.has(id))ids.set(id,node());return ids.get(id);},localStorage:{getItem:k=>storage[k],setItem:(k,v)=>storage[k]=v},document:{querySelectorAll:()=>[]},setZone(){},tabKeys(){},stopRadar(){},radarMap:null,weatherTab:'overview',refresh(){refreshed++;},selectNews(){},newsCategory:'local',sportsLeague:'nfl',sportsFeeds:{},renderSports(){}};
+const ids=new Map();const node=()=>({replaceChildren(){},value:'',classList:{toggle(){}},setAttribute(){},focus(){},showModal(){this.open=true;},close(){this.open=false;}});const storage={};let refreshed=0;
+const ctx={$:id=>{if(!ids.has(id))ids.set(id,node());return ids.get(id);},localStorage:{getItem:k=>storage[k],setItem:(k,v)=>storage[k]=v},document:{createElement:node,querySelectorAll:()=>[]},setZone(){},tabKeys(){},stopRadar(){},radarMap:null,weatherTab:'overview',refresh(){refreshed++;},selectNews(){},newsCategory:'local',sportsLeague:'nfl',sportsFeeds:{},renderSports(){}};
 vm.createContext(ctx);vm.runInContext(fs.readFileSync('assets/preferences.js','utf8'),ctx);assert.equal(vm.runInContext('preferences.place',ctx),null);
 vm.runInContext(fs.readFileSync('assets/settings.js','utf8'),ctx);
 assert.equal(ids.get('location-label').textContent,'SET LOCATION');ids.get('weather-set-location').onclick();assert(ids.get('display-dialog').open);assert(!ids.get('settings-panel-location').hidden);

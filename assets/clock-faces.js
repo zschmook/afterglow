@@ -89,8 +89,10 @@
   classic.after(dial);
   const choice=$('clock-face');
   function selectFace(){
-    const mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport',calculator=preferences.clockFace==='calculator',hp12c=preferences.clockFace==='hp12c',ti84=preferences.clockFace==='ti84',ti89=preferences.clockFace==='ti89';
-    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mechanical||aviation||rectangular||skeleton||sport||calculator||hp12c||ti84||ti89);dial.toggleAttribute('hidden',!mechanical);
+    const mickey=preferences.clockFace==='mickey',mechanical=preferences.clockFace==='mechanical',aviation=preferences.clockFace==='aviation',rectangular=preferences.clockFace==='rectangular',skeleton=preferences.clockFace==='skeleton',sport=preferences.clockFace==='sport',calculator=preferences.clockFace==='calculator',hp12c=preferences.clockFace==='hp12c',ti84=preferences.clockFace==='ti84',ti89=preferences.clockFace==='ti89';
+    choice.value=preferences.clockFace;classic.toggleAttribute('hidden',mickey||mechanical||aviation||rectangular||skeleton||sport||calculator||hp12c||ti84||ti89);dial.toggleAttribute('hidden',!mechanical);
+    window.MickeyFace.dial.toggleAttribute('hidden',!mickey);
+    $('clock-panel').classList.toggle('mickey-face-selected',mickey);
     window.AviationFace.dial.toggleAttribute('hidden',!aviation);
     window.RectangularFace.dial.toggleAttribute('hidden',!rectangular);
     window.SkeletonFace.dial.toggleAttribute('hidden',!skeleton);
@@ -109,11 +111,12 @@
     $('clock-panel').classList.toggle('calculator-face-selected',calculator);
     $('clock-panel').classList.toggle('hp12c-face-selected',hp12c);
   }
-  choice.addEventListener('change',()=>{preferences.clockFace=['mechanical','aviation','rectangular','skeleton','sport','calculator','hp12c','ti84','ti89'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
+  choice.addEventListener('change',()=>{preferences.clockFace=['mickey','mechanical','aviation','rectangular','skeleton','sport','calculator','hp12c','ti84','ti89'].includes(choice.value)?choice.value:'classic';savePreferences();selectFace();});
   document.addEventListener('visibilitychange',()=>dial.classList.toggle('mf-paused',document.hidden));
   dial.classList.toggle('mf-paused',document.hidden);
   let stamp='';
   window.MechanicalFace={tick(now,h,m,s,digital,timeZone){
+    window.MickeyFace.tick(now,h,m,s,digital,timeZone);
     window.AviationFace.tick(now,h,m,s,digital,timeZone);
     window.RectangularFace.tick(now,h,m,s,digital,timeZone);
     window.SkeletonFace.tick(now,h,m,s,digital,timeZone);

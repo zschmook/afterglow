@@ -32,12 +32,9 @@
   <path d="M126 80 96 99 106 125H126Z" fill="#f66a21" stroke="#ff9e59" stroke-width="1"/>
   <text id="sp-date-badge" x="114" y="111" text-anchor="middle" class="sp-badge">—</text>
   <g text-anchor="middle">
-    <text id="sp-temperature" x="207" y="103" class="sp-value">—</text>
-    <text id="sp-date" x="190" y="131" class="sp-date">—</text>
-    <image id="sp-weather" x="240" y="79" width="47" height="47" href="/assets/weather-icons/meteocons/fill/not-available.svg"/>
-    <text id="sp-digital" x="165" y="167" class="sp-digital">—:—</text>
-    <text id="sp-period" x="250" y="165" class="sp-label">LOCAL</text>
-    <text x="123" y="212" class="sp-label">LOCAL TIME</text>
+    <text id="sp-temperature" x="180" y="132" class="sp-value">—</text>
+    <text x="180" y="151" class="sp-caption">OUTSIDE</text>
+    <image id="sp-weather" x="228" y="106" width="47" height="47" href="/assets/weather-icons/meteocons/fill/not-available.svg"/>
     <text x="124" y="242" class="sp-label">WIND</text>
     <text id="sp-wind" x="124" y="257" class="sp-readout">—</text>
     <text x="227" y="242" class="sp-label">HUMIDITY</text>
@@ -95,9 +92,7 @@
     const key=[digital,timeZone,Math.floor(now.getTime()/60000)].join('|');
     if(key!==stamp){
       const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone,weekday:'short',day:'2-digit',month:'short',year:'numeric'}).formatToParts(now).map(p=>[p.type,p.value]));
-      stamp=key;$('sp-digital').textContent=digital.replace(/\s*[AP]M$/i,'');
-      $('sp-period').textContent=preferences.clock24?'24H':digital.match(/[AP]M$/i)?.[0]||'';
-      $('sp-date').textContent=`${parts.day} ${parts.month.toUpperCase()}`;
+      stamp=key;
       $('sp-date-badge').textContent=parts.day;
       $('sp-hours').textContent=Math.floor(h).toString().padStart(2,'0');
       $('sp-progress').setAttribute('width',(116*h/24).toFixed(2));

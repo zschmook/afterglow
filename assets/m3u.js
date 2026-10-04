@@ -88,7 +88,7 @@
     else if(error&&!media){text='Playlist unavailable';detail=error;}
     else if(streamError){text='Stream unavailable';detail='Try again or choose another channel.';}
     else if(media&&isCustom){text=ownVideo?'':!expanded&&dialog.open?'Playing in expanded view':media.videoWidth?'Playing in another card':'♪ '+selected.name;}
-    else text=playlist.entries.length?'Choose a stream below':'Paste a playlist URL to get started';
+    else text=playlist.entries.length?'Choose a stream below':'Set your playlist URL in Settings → Media';
     ui.stage.setAttribute('aria-busy',String(busy));
     ui.placeholder.hidden=!text;ui.spinner.hidden=!busy;
     ui.placeholder.classList.toggle('m3u-loading',busy);
@@ -189,11 +189,13 @@
       const result=await response.json();
       if(!response.ok)throw Error(result.error || 'Could not load that playlist.');
       const entries=clean(result.entries);if(!entries.length)throw Error('No playable URLs were found.');
-      playlist={url,entries};hostCard=card;
+      playlist={url,entries};if(card)hostCard=card;
       notice=result.skipped?result.skipped+' unsupported entries skipped.':'';
       try {localStorage.setItem('dashboard-m3u',JSON.stringify(playlist));}
       catch {notice='Loaded. This playlist is too large to remember in this browser.';}
-      for(const ui of cards.values()){ui.input.value=url;ui.signature='';}
+      for(const ui of cards.values()){ui.signature='';}
+      const settingsInput=document.getElementById('m3u-settings-url');
+      if(settingsInput)settingsInput.value=url;
     } catch(e) {if(request===current)error=e.name==='AbortError'?'Playlist request timed out. Try again.':e.message;}
     finally {clearTimeout(timeout);if(request===current){loading=false;render();}}
   }
@@ -202,15 +204,16 @@
     const running=isCustom&&active(state);
     const message=isCustom&&state.phase==='connecting'&&!media?.hasPlayed?'Connecting…':state.message;
     const status=error || (loading?'Loading playlist…':isCustom&&state.phase==='error'?'Could not play this stream. Its format or access settings may not work in this browser.':notice || (isCustom?message:'') || '');
+    const settingsStatus=document.getElementById('m3u-settings-status');
+    if(settingsStatus)settingsStatus.textContent=error || (loading?'Loading playlist…':notice || (playlist.entries.length?playlist.entries.length+' channels saved in this browser.':'Enter an M3U playlist URL.'));
     for(const [card,ui] of cards){
-      ui.load.disabled=loading;ui.load.textContent=loading?'…':'↵';
       populateChannels(ui.select,selected);
       ui.count.textContent=playlist.entries.length?playlist.entries.length+' ENTRIES':'M3U';
       ui.status.textContent=status;ui.status.title=status;ui.status.classList.toggle('radio-error',!!error||state.phase==='error');
       ui.toggle.textContent=running?'■':'▶';ui.toggle.disabled=!isCustom&&!ui.select.value;
       ui.toggle.setAttribute('aria-label',running?'Stop media':'Start media');ui.toggle.title=running?'Stop media':'Start media';
       ui.mute.setAttribute('aria-pressed',String(state.muted));ui.mute.setAttribute('aria-label',state.muted?'Unmute media':'Mute media');
-      ui.expand.disabled=!isCustom;renderStage(ui,state,selected);
+      renderStage(ui,state,selected);
       ui.stage.classList.toggle('m3u-audio',!!media&&!media.videoWidth);
     }
     renderStage(largeMessage,state,selected,true);
@@ -222,14 +225,14 @@
     dialog.querySelector('.m3u-player-status').textContent=status;
   }
   window.CustomM3U={
+    loadPlaylist,
     mount(card){
-      card.innerHTML='<div class="panel-heading"><h2>CUSTOM M3U</h2><span class="m3u-count">M3U</span></div><form class="m3u-form"><input class="m3u-url" type="url" aria-label="M3U playlist URL" placeholder="https://example.com/playlist.m3u" required autocomplete="off"><button type="submit" class="m3u-load" aria-label="Load playlist" title="Load playlist">↵</button></form><div class="m3u-stage"></div><div class="m3u-controls"><button class="m3u-toggle" aria-label="Start media">▶</button><select class="m3u-select" aria-label="Choose playlist entry"></select><button class="m3u-mute" aria-label="Mute media"></button><button class="m3u-expand" aria-label="Expand video" title="Expand">⛶</button></div><p class="m3u-status" role="status"></p>';
-      const q=s=>card.querySelector(s),ui={...stageMessage(q('.m3u-stage')),input:q('.m3u-url'),load:q('.m3u-load'),select:q('.m3u-select'),toggle:q('.m3u-toggle'),mute:q('.m3u-mute'),expand:q('.m3u-expand'),status:q('.m3u-status'),count:q('.m3u-count')};
+      card.innerHTML='<div class="panel-heading"><h2>CUSTOM M3U</h2><span class="m3u-count">M3U</span></div><div class="m3u-stage"></div><div class="m3u-controls"><button class="m3u-toggle" aria-label="Start media">▶</button><select class="m3u-select" aria-label="Choose playlist entry"></select><button class="m3u-mute" aria-label="Mute media"></button></div><p class="m3u-status" role="status"></p>';
+      const q=s=>card.querySelector(s),ui={...stageMessage(q('.m3u-stage')),select:q('.m3u-select'),toggle:q('.m3u-toggle'),mute:q('.m3u-mute'),status:q('.m3u-status'),count:q('.m3u-count')};
       fullscreenPlayer(ui.stage,q('.m3u-controls'));
-      cards.set(card,ui);ui.input.value=playlist.url;
-      q('form').onsubmit=event=>{event.preventDefault();loadPlaylist(ui.input.value.trim(),card);};
+      cards.set(card,ui);
       ui.select.onchange=()=>chooseChannel(ui.select.value,card);
-      ui.toggle.onclick=()=>toggle(card);ui.mute.innerHTML=speaker;ui.mute.onclick=()=>service.mute();ui.expand.onclick=()=>openPlayer(card);
+      ui.toggle.onclick=()=>toggle(card);ui.mute.innerHTML=speaker;ui.mute.onclick=()=>service.mute();
       if(!hostCard||!cards.has(hostCard)){hostCard=card;if(!dialog.open)moveMedia(ui.stage);}
       render();
     },
@@ -279,4 +282,6 @@
     openPlayer
   };
   service.subscribe(render);
+  const settingsInput=document.getElementById('m3u-settings-url');
+  if(settingsInput)settingsInput.value=playlist.url;
 })();

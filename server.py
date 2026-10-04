@@ -2,6 +2,7 @@
 from system_stats import snapshot as system_snapshot
 from playlist import fetch_playlist
 import media_relay
+import home_devices
 import argparse
 import json
 import copy
@@ -20,7 +21,7 @@ from urllib.error import HTTPError
 from urllib.parse import urlsplit, parse_qs
 
 ROOT = Path(__file__).parent
-HOME_SERVICE = os.environ.get('HOME_SERVICE', 'http://localhost:9998').rstrip('/')
+
 
 
 HOME_STATES = {}
@@ -52,27 +53,27 @@ def home_refresh_worker():
 
 
 def home_request(path, method='GET', body=None, fresh=False):
-    routes = {'/api/home/devices': ('/api/movie-lighting/lights', 'GET'),
-              '/api/home/discover': ('/api/movie-lighting/devices/discover', 'POST')}
-    if path in routes:
-        target, allowed = routes[path]
-        if method != allowed:
+    if path in ('/api/home/devices', '/api/home/discover'):
+        if method != ('GET' if path.endswith('/devices') else 'POST'):
             raise ValueError('Unsupported device operation')
-    else:
-        match = re.fullmatch(r'/api/home/(lights|outlets)/([A-Za-z0-9_-]{1,100})/(state|control)', path)
-        if not match or method != ('GET' if match[3] == 'state' else 'POST'):
-            raise ValueError('Unsupported device operation')
-        target = '/api/movie-lighting/' + '/'.join(match.groups())
+        if path.endswith('/devices'):
+            return {'lights': home_devices.lights(), 'outlets': home_devices.outlets()}
+        result = home_devices.discover_devices()
+        with HOME_STATE_LOCK:
+            HOME_STATES.clear()
+        return result
+    match = re.fullmatch(r'/api/home/(lights|outlets)/([A-Za-z0-9_-]{1,100})/(state|control)', path)
+    if not match or method != ('GET' if match[3] == 'state' else 'POST'):
+        raise ValueError('Unsupported device operation')
     if method == 'GET' and path.endswith('/state') and not fresh:
         with HOME_STATE_LOCK:
             cached = HOME_STATES.get(path)
             if cached and time.monotonic() - cached[0] < 900:
                 return cached[1]
-    request = Request(HOME_SERVICE + target, method=method,
-                      data=json.dumps(body).encode() if method == 'POST' else None,
-                      headers={'Content-Type': 'application/json'})
-    with urlopen(request, timeout=75 if path.endswith('/discover') else 12) as response:
-        result = json.load(response)
+    reader, controller = ((home_devices.light_state, home_devices.control_light)
+                          if match[1] == 'lights' else
+                          (home_devices.outlet_state, home_devices.control_outlet))
+    result = reader(match[2]) if method == 'GET' else controller(match[2], body)
     if path.endswith('/state') or path.endswith('/control'):
         state_path = path.removesuffix('/control') + '/state' if path.endswith('/control') else path
         with HOME_STATE_LOCK:
@@ -127,6 +128,22 @@ SOURCES.update({
     'guardian_world': ('https://www.theguardian.com/world/rss', 600),
     'npr_world': ('https://feeds.npr.org/1004/rss.xml', 600),
 })
+SPORTS_FEEDS = {'nfl': ('sports',), 'ncaa': ('ncaa_fbs', 'ncaa_fcs'),
+                **{key: (key,) for key in ('mlb','nba','nhl','wnba','ncaam','ncaaw','mls')}}
+for key, route in {'mlb':'baseball/mlb','nba':'basketball/nba','nhl':'hockey/nhl',
+                   'wnba':'basketball/wnba','ncaam':'basketball/mens-college-basketball',
+                   'ncaaw':'basketball/womens-college-basketball','mls':'soccer/usa.1'}.items():
+    SOURCES[key] = (f'https://site.api.espn.com/apis/site/v2/sports/{route}/scoreboard' +
+                    ('?groups=50&limit=1000' if key in ('ncaam','ncaaw') else ''), 60)
+
+
+def selected_sports(query):
+    requested = query.get('leagues', ['nfl,ncaa'])[0].split(',')
+    if not requested or len(requested) > len(SPORTS_FEEDS) or any(key not in SPORTS_FEEDS for key in requested):
+        raise ValueError('Choose supported sports leagues.')
+    return list(dict.fromkeys(requested))
+
+
 LOCKS = {key: threading.Lock() for key in SOURCES}
 SOURCES['weather'] = (SOURCES['weather'][0] + '&hourly=temperature_2m,precipitation_probability,weather_code,is_day&timeformat=unixtime', 600)
 
@@ -255,6 +272,8 @@ def add_team_locations(sports):
     result = copy.deepcopy(sports)
     targets = []
     for name, feed in result.items():
+        if name not in ('nfl', 'ncaa'):
+            continue
         league = 'nfl' if name == 'nfl' else 'college-football'
         for event in (feed.get('data') or {}).get('events', []):
             competition = (event.get('competitions') or [{}])[0]
@@ -286,7 +305,7 @@ class Handler(SimpleHTTPRequestHandler):
             except Exception:
                 payload = {'error': 'The device service could not complete that request.'}
         except Exception:
-            payload, status = {'error': 'Home device service unavailable. Check m3u picker on 9998.'}, 502
+            payload, status = {'error': 'Could not reach your home devices. Check their power and Wi-Fi connection.'}, 502
         raw = json.dumps(payload).encode()
         self.send_response(status)
         self.send_header('Content-Type', 'application/json')
@@ -392,21 +411,25 @@ class Handler(SimpleHTTPRequestHandler):
             else:
                 try:
                     query = parse_qs(urlsplit(self.path).query)
+                    leagues = selected_sports(query)
                     coordinates = (float(query['lat'][0]), float(query['lon'][0])) if 'lat' in query and 'lon' in query else None
                     if coordinates and (not all(math.isfinite(v) for v in coordinates) or abs(coordinates[0]) > 90 or abs(coordinates[1]) > 180):
                         raise ValueError()
                 except ValueError:
                     self.send_error(400, 'Invalid coordinates')
                     return
-                keys = ('alerts', 'weather', 'sports', 'ncaa_fbs', 'ncaa_fcs', *NEWS_FEEDS)
+                keys = ('alerts', 'weather', *(key for league in leagues for key in SPORTS_FEEDS[league]), *NEWS_FEEDS)
                 with ThreadPoolExecutor(max_workers=8) as pool:
                     feeds = dict(zip(keys, pool.map(lambda key: ({'data': None, 'stale': False, 'fetched': None} if key in ('weather', 'alerts') and coordinates is None else fetch_feed(key, coordinates if key in ('weather', 'alerts') else None)), keys)))
                 categories = {category: combine_publishers([(publisher, feeds[key]) for key, (publisher, group) in NEWS_FEEDS.items() if group == category]) for category in ('local', 'national', 'world')}
                 for key in NEWS_FEEDS:
                     feeds.pop(key)
                 feeds['news'] = categories
-                nfl = feeds.pop('sports')
-                feeds['sports'] = {'nfl': nfl, 'ncaa': combine_college(feeds.pop('ncaa_fbs'), feeds.pop('ncaa_fcs'))}
+                sports = {}
+                for league in leagues:
+                    selected = [feeds.pop(key) for key in SPORTS_FEEDS[league]]
+                    sports[league] = combine_college(*selected) if league == 'ncaa' else selected[0]
+                feeds['sports'] = sports
                 if coordinates:
                     feeds['sports'] = add_team_locations(feeds['sports'])
             body = json.dumps(feeds).encode()
@@ -446,7 +469,7 @@ def main():
         parser.exit(1, f'Cannot listen on {args.host}:{args.port}: {error}\n')
     threading.Thread(target=home_refresh_worker, daemon=True, name='home-refresh').start()
     print(f'Dashboard: http://localhost:{args.port} — Ctrl+C to stop', flush=True)
-    print(f'Lighting service: {HOME_SERVICE}', flush=True)
+    print('Home controls built in - open Home and choose Find devices.', flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

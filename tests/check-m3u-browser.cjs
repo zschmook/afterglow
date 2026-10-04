@@ -55,10 +55,10 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
    await button.press('Escape');await page.waitForFunction(()=>!document.fullscreenElement?.classList.contains('m3u-player'));
    assert(await player.locator('video').evaluate(v=>v===window.fullscreenMedia&&!v.paused),'Escape preserves playback');
   };
-  await card().locator('.m3u-url').fill('https://example.com/outdated.m3u');await card().locator('.m3u-load').click();
+  await page.evaluate(url=>{void window.CustomM3U.loadPlaylist(url);},'https://example.com/outdated.m3u');
   await page.waitForFunction(()=>document.querySelector('.m3u-stage-label').textContent==='Playlist unavailable');
   assert(!(await card().locator('.m3u-spinner').isVisible()),'Errors do not leave a spinner running');
-  await card().locator('.m3u-url').fill('https://example.com/list.m3u');await card().locator('.m3u-load').click();
+  await page.evaluate(url=>{void window.CustomM3U.loadPlaylist(url);},'https://example.com/list.m3u');
   assert(await card().locator('.m3u-spinner').isVisible());
   assert.equal(await card().locator('.m3u-stage').getAttribute('aria-busy'),'true');
   assert.equal(await card().locator('.m3u-stage-label').textContent(),'Loading playlist…');
@@ -73,7 +73,7 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
   await card().locator('.m3u-select').selectOption('custom:video');
   assert(await card().locator('.m3u-spinner').isVisible());
   assert.equal(await card().locator('.m3u-stage-label').textContent(),'Connecting…');
-  await card().locator('.m3u-expand').click();
+  await page.evaluate(()=>window.CustomM3U.openPlayer());
   assert(await page.locator('#m3u-expanded .m3u-spinner').isVisible());
   await page.screenshot({path:path.resolve('research/m3u-loading-expanded.png')});
   await page.keyboard.press('Escape');releaseVideo();
@@ -94,7 +94,7 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
   assert(await page.evaluate(()=>document.fullscreenElement===document.documentElement));
   await page.locator('#fullscreen').click();await page.waitForFunction(()=>!document.fullscreenElement);
   await page.screenshot({path:path.resolve('research/m3u-card-desktop.png')});
-  await card().locator('.m3u-expand').click();
+  await page.evaluate(()=>window.CustomM3U.openPlayer());
   assert(await page.locator('#m3u-expanded').evaluate(e=>e.open));
   assert(await page.locator('.m3u-large-stage video').evaluate(e=>e===window.originalMedia));
   assert.equal(await page.evaluate(()=>radioService.snapshot().phase),'playing');
@@ -115,13 +115,13 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
   await card().locator('.m3u-select').selectOption('custom:audio');await page.waitForFunction(()=>radioService.snapshot().phase==='playing');
   assert(await card().locator('.m3u-placeholder').isVisible());
   assert((await card().locator('.m3u-placeholder').textContent()).includes('Test audio'));
-  await card().locator('.m3u-url').fill('https://example.com/broken.m3u');await card().locator('.m3u-load').click();
+  await page.evaluate(url=>{void window.CustomM3U.loadPlaylist(url);},'https://example.com/broken.m3u');
   await page.waitForFunction(()=>document.querySelector('.m3u-status').textContent==='No media URLs found.');
   assert.equal(await page.evaluate(()=>radioService.snapshot().phase),'playing','Failed playlist load preserves playback');
   assert.equal(await card().locator('.m3u-select option').count(),5);
   await page.reload({waitUntil:'domcontentloaded'});await card().locator('.m3u-select option').nth(4).waitFor({state:'attached'});
   assert.equal(await page.evaluate(()=>radioService.snapshot().phase),'idle','No autoplay after reload');
-  assert.equal(await card().locator('.m3u-url').inputValue(),'https://example.com/list.m3u');
+  assert.equal(await page.locator('#m3u-settings-url').inputValue(),'https://example.com/list.m3u');assert.equal(await card().locator('.m3u-form').count(),0);
   await card().locator('.m3u-select').selectOption('custom:broken');await page.waitForFunction(()=>radioService.snapshot().phase==='error');
   assert((await card().locator('.m3u-status').textContent()).includes('Could not play'));
   assert(!(await card().locator('.m3u-spinner').isVisible()));
@@ -132,7 +132,7 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
    assert(fit.sh<=fit.h+2&&fit.sw<=fit.w+2,JSON.stringify({size,fit}));
   }
   await card().locator('.m3u-select').selectOption('custom:video');await page.waitForFunction(()=>radioService.snapshot().phase==='playing');
-  await card().locator('.m3u-expand').click();const box=await page.locator('#m3u-expanded').boundingBox();assert(box.x>=0&&box.x+box.width<=391);
+  await page.evaluate(()=>window.CustomM3U.openPlayer());const box=await page.locator('#m3u-expanded').boundingBox();assert(box.x>=0&&box.x+box.width<=391);
   await page.keyboard.press('Escape');await page.setViewportSize({width:1920,height:720});
   await page.evaluate(()=>window.movingMedia=document.querySelector('.m3u-stage video'));
   const center=()=>page.locator('#center-media .m3u');
@@ -153,7 +153,7 @@ const {chromium}=require('playwright'),assert=require('assert'),path=require('pa
   assert.equal(await page.locator('#calendar-back').getAttribute('aria-label'),'Return to Custom M3U');
   assert.equal(await page.evaluate(()=>radioService.snapshot().phase),'playing');
   await page.locator('#calendar-back').click();await assertSinglePlayer('#center-media');
-  await center().locator('.m3u-expand').click();
+  await page.evaluate(()=>window.CustomM3U.openPlayer());
   assert(await page.locator('.m3u-large-stage video').evaluate(v=>v===window.movingMedia));
   await page.keyboard.press('Escape');await assertSinglePlayer('#center-media');
   await page.screenshot({path:path.resolve('research/m3u-center-desktop.png')});

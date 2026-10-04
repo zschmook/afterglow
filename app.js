@@ -37,6 +37,12 @@ function renderNews(){
   if(focused)[...list.children].find(a=>a.href===focused)?.focus({preventScroll:true});
   list.scrollTop=scroll;
 }
+function sportsPeriod(league,period){
+ if(league==='mlb')return 'Inning '+period;
+ const limit=league==='nhl'?3:['ncaam','mls'].includes(league)?2:4;
+ const label=league==='nhl'?'Period ':['ncaam','mls'].includes(league)?'Half ':'Quarter ';
+ return period<=limit?label+period:'Overtime '+(period-limit);
+}
 const expandedGames=new Set();
 function gameState(event){return (event.status||event.competitions?.[0]?.status)?.type?.state||'pre';}
 function gameDistance(event){
@@ -55,7 +61,7 @@ function renderSports(feed){
  if(!feed?.data){list.textContent='Scores temporarily unavailable';return;}
  const rank={in:0,pre:1,post:2};
  const events=[...(feed.data.events||[])].sort((a,b)=>{const sa=gameState(a),sb=gameState(b);return (rank[sa]??3)-(rank[sb]??3)||(sa==='in'&&sb==='in'?(gameDistance(a)-gameDistance(b)||0):0)||(sa==='post'?Date.parse(b.date)-Date.parse(a.date):Date.parse(a.date)-Date.parse(b.date))||0;});
- if(!events.length){list.textContent=`No ${sportsLeague==='ncaa'?'NCAA D1':'NFL'} games on the current scoreboard.`;return;}
+ if(!events.length){list.textContent=`No ${sportsCatalog[sportsLeague]||sportsLeague.toUpperCase()} games on the current scoreboard.`;return;}
  const scroll=list.dataset.league===sportsLeague?list.scrollTop:0;
  const focused=list.contains(document.activeElement)?document.activeElement?.dataset?.gameKey:null;
  list.dataset.league=sportsLeague;
@@ -79,19 +85,19 @@ function renderSports(feed){
   add('',status.type?.detail||status.type?.description);
   if(state==='in'){
    const miles=gameDistance(event);if(Number.isFinite(miles))add('Nearest team’s home: ',Math.round(miles)+' miles from your ZIP');
-   if(status.period>0)add('',status.period<=4?'Quarter '+status.period:'Overtime '+(status.period-4));
-   if(status.displayClock)add('Time remaining: ',status.displayClock);
+   if(status.period>0)add('',sportsPeriod(sportsLeague,status.period));
+   if(status.displayClock)add(sportsLeague==='mls'?'Match clock: ':'Time remaining: ',status.displayClock);
    add('',competition.situation?.downDistanceText);add('Ball: ',competition.situation?.possessionText);
    add('Last play: ',competition.situation?.lastPlay?.text);
   }else if(state==='pre')add('Starts: ',scheduled);
-  for(const c of competition.competitors||[]){if(c.linescores?.length)add((c.team?.abbreviation||'Team')+' by quarter: ',c.linescores.map((q,i)=>(i<4?'Q'+(i+1):'OT'+(i-3))+': '+(q.displayValue??q.value??'—')).join(' · '));}
+  for(const c of competition.competitors||[]){if(c.linescores?.length)add((c.team?.abbreviation||'Team')+' by period: ',c.linescores.map((q,i)=>sportsPeriod(sportsLeague,q.period||i+1)+': '+(q.displayValue??q.value??'—')).join(' · '));}
   add('Venue: ',competition.venue?.fullName);
   add('TV: ',[...new Set((competition.broadcasts||[]).flatMap(b=>b.names||[]))].join(', '));
   game.append(detail);nodes.push(game);
  }
  list.replaceChildren(...nodes);if(focused)summaries.find(s=>s.dataset.gameKey===focused)?.focus({preventScroll:true});list.scrollTop=scroll;
 }
-async function refresh(){if(typeof embeddedPanel!=='undefined'&&['quotes','system','radio'].includes(embeddedPanel))return;if(refreshing)return;refreshing=true;const requestedPlace=preferences.place;try{const response=await fetch(preferences.place?`/api/dashboard?lat=${preferences.place.lat}&lon=${preferences.place.lon}`:'/api/dashboard');if(!response.ok)throw Error();const data=await response.json();if(requestedPlace!==preferences.place)return;renderWeather(data.weather);if(typeof renderWeatherAlerts==='function')renderWeatherAlerts(data.alerts);if(typeof renderWeatherAlerts==='function')renderWeatherAlerts(data.alerts);newsFeeds=data.news;selectNews(newsCategory,false);sportsFeeds=data.sports;renderSports(sportsFeeds[sportsLeague]);$('sync-status').textContent=[data.weather,...Object.values(data.sports),...Object.values(data.news)].some(f=>f.stale)?'SOME FEEDS UNAVAILABLE / CACHED':'UPDATED '+new Date().toLocaleTimeString('en-US',{timeZone:zone,hour:'numeric',minute:'2-digit'});}catch{$('sync-status').textContent='CONNECTION LOST · RETRYING';}finally{refreshing=false;if(requestedPlace!==preferences.place)refresh();}}setInterval(()=>{if(!document.hidden)refresh();},60000);
+async function refresh(){if(typeof embeddedPanel!=='undefined'&&['quotes','system','radio'].includes(embeddedPanel))return;if(refreshing)return;refreshing=true;const requestedPlace=preferences.place,requestedLeagues=preferences.sportsLeagues.join(',');try{const response=await fetch('/api/dashboard?leagues='+encodeURIComponent(requestedLeagues)+(preferences.place?`&lat=${preferences.place.lat}&lon=${preferences.place.lon}`:''));if(!response.ok)throw Error();const data=await response.json();if(requestedPlace!==preferences.place||requestedLeagues!==preferences.sportsLeagues.join(','))return;renderWeather(data.weather);if(typeof renderWeatherAlerts==='function')renderWeatherAlerts(data.alerts);if(typeof renderWeatherAlerts==='function')renderWeatherAlerts(data.alerts);newsFeeds=data.news;selectNews(newsCategory,false);sportsFeeds=data.sports;renderSports(sportsFeeds[sportsLeague]);$('sync-status').textContent=[data.weather,...Object.values(data.sports),...Object.values(data.news)].some(f=>f.stale)?'SOME FEEDS UNAVAILABLE / CACHED':'UPDATED '+new Date().toLocaleTimeString('en-US',{timeZone:zone,hour:'numeric',minute:'2-digit'});}catch{$('sync-status').textContent='CONNECTION LOST · RETRYING';}finally{refreshing=false;if(requestedPlace!==preferences.place||requestedLeagues!==preferences.sportsLeagues.join(','))refresh();}}setInterval(()=>{if(!document.hidden)refresh();},60000);
 $('settings').onclick=()=>$('display-dialog').showModal();$('close-settings').onclick=()=>$('display-dialog').close();function scale(value){value=Math.max(85,Math.min(140,Number(value)||100));document.documentElement.style.setProperty('--ui-scale',value/100);$('ui-scale').value=value;$('scale-value').textContent=value+'%';try{localStorage.setItem('ui-scale',value);}catch{}}try{scale(localStorage.getItem('ui-scale')||100);}catch{scale(100);}$('ui-scale').oninput=e=>scale(e.target.value);$('reset-scale').onclick=()=>scale(100);$('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('sync-status').textContent='FULLSCREEN UNAVAILABLE IN THIS BROWSER';}};
 
 $('league').onchange=e=>{sportsLeague=e.target.value;renderSports(sportsFeeds[sportsLeague]);};

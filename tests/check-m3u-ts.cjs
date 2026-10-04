@@ -42,7 +42,7 @@ server.shutdown();server.server_close()
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'domcontentloaded'});
   const card=page.locator('.slot-scores .m3u');
-  await card.locator('.m3u-url').fill(process.env.M3U_TEST_URL || `http://127.0.0.1:${upstream.address().port}/channels.m3u`);await card.locator('.m3u-load').click();
+  await page.evaluate(url=>window.CustomM3U.loadPlaylist(url),process.env.M3U_TEST_URL || `http://127.0.0.1:${upstream.address().port}/channels.m3u`);
   await page.waitForFunction(()=>document.querySelector('.slot-scores .m3u-select').options.length>=3);
   if(process.env.M3U_TEST_URL){
    const channels=await card.locator('select').evaluate(s=>[...s.options].map(o=>({id:o.value,name:o.text})));
@@ -51,7 +51,7 @@ server.shutdown();server.server_close()
    await page.waitForFunction(()=>radioService.snapshot().phase==='playing'&&document.querySelector('.m3u-stage video')?.currentTime>1,null,{timeout:25000})
     .catch(async error=>{console.error(await page.evaluate(()=>({phase:radioService.snapshot().phase,message:radioService.snapshot().message,videoError:document.querySelector('.m3u-stage video')?.error?.message})));throw error;});
    await page.screenshot({path:path.join(root,'research/m3u-live-card.png')});
-   await card.locator('.m3u-expand').click();await page.screenshot({path:path.join(root,'research/m3u-live-expanded.png')});
+   await page.locator('.radio-mini-name').click();await page.screenshot({path:path.join(root,'research/m3u-live-expanded.png')});
    await page.keyboard.press('Escape');await page.locator('.radio-mini-toggle').click();
    let active=1;
    for(let i=0;i<60&&active;i++){active=(await(await fetch(base+'/api/media/status')).json()).active_streams;if(active)await new Promise(r=>setTimeout(r,100));}
@@ -66,7 +66,7 @@ server.shutdown();server.server_close()
   await card.locator('select').selectOption(id1);
   await page.waitForFunction(()=>radioService.snapshot().phase==='playing'&&document.querySelector('.m3u-stage video')?.videoWidth>0,null,{timeout:15000});
   assert.equal(subscribers,1);
-  await card.locator('.m3u-expand').click();
+  await page.locator('.radio-mini-name').click();
   await page.locator('#m3u-expanded select').selectOption(id2);
   await page.waitForFunction(()=>radioService.snapshot().phase==='playing'&&document.querySelector('#m3u-expanded').open&&document.querySelector('.m3u-large-stage video')?.videoWidth>0);
   assert.equal(await page.locator('#m3u-expanded h2').textContent(),'Flower two');
