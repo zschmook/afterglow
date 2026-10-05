@@ -77,7 +77,7 @@
     const humidity=known&&Number.isFinite(c.relative_humidity_2m)?`${Math.round(c.relative_humidity_2m)}%`:'—';
     const code=known&&Number.isFinite(c.weather_code)?c.weather_code:null;
     const icon=code===null?'not-available':weatherInfo(code,c.is_day)[1];
-    const key=[temp,wind,humidity,icon,!!feed?.stale].join('|');
+    const key=[temp,wind,humidity,iconPath(icon),!!feed?.stale].join('|');
     if(key===weatherStamp)return;weatherStamp=key;
     $('sp-temperature').textContent=temp;$('sp-wind').textContent=wind;$('sp-humidity').textContent=humidity;
     $('sp-weather').setAttribute('href',iconPath(icon));

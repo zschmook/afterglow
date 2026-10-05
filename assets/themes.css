@@ -36,6 +36,42 @@
   --theme-dial-muted: #62503e;
   --theme-dial-accent: #8b582c;
 }
+:root[data-theme="halloween"] {
+  color-scheme: dark;
+  --ink: #fff0da;
+  --muted: #c9b3d3;
+  --pink: #c699f4;
+  --cyan: #ffad55;
+  --edge: #65406f;
+  --theme-background: #130e1c;
+  --theme-panel: #25182f;
+  --theme-control: #1a1124;
+  --theme-selected: #482839;
+  --theme-radius: 20px;
+  --theme-face: #302038;
+  --theme-face-edge: #160f20;
+  --theme-dial-ink: #fff0da;
+  --theme-dial-muted: #b79dc5;
+  --theme-dial-accent: #ffad55;
+}
+:root[data-theme="thanksgiving"] {
+  color-scheme: dark;
+  --ink: #fff2d9;
+  --muted: #cfb998;
+  --pink: #df9d80;
+  --cyan: #f3bd63;
+  --edge: #78513c;
+  --theme-background: #211610;
+  --theme-panel: #38251b;
+  --theme-control: #291b15;
+  --theme-selected: #5a3028;
+  --theme-radius: 22px;
+  --theme-face: #f5e5c5;
+  --theme-face-edge: #e7c99b;
+  --theme-dial-ink: #493322;
+  --theme-dial-muted: #96734e;
+  --theme-dial-accent: #a34f35;
+}
 html[data-theme]:not([data-theme="afterglow"]) body {
   background: var(--theme-background);
   color: var(--ink);
@@ -97,3 +133,77 @@ html[data-theme]:not([data-theme="afterglow"]) #second-hand circle,
 html[data-theme]:not([data-theme="afterglow"]) #clock > circle:nth-last-child(2) { fill: var(--theme-dial-accent); }
 html[data-theme]:not([data-theme="afterglow"]).embedded-panel body { background: transparent; }
 html[data-theme="hearth"] .quote-body blockquote { font-family: Georgia, serif; }
+
+html[data-theme="halloween"] body {
+  background: radial-gradient(ellipse at top left, #45213d66, transparent 55%),
+              radial-gradient(ellipse at bottom right, #8e3e1d33, transparent 50%),
+              var(--theme-background);
+}
+html[data-theme="halloween"] .panel {
+  background: linear-gradient(145deg, #30203b, var(--theme-panel) 65%);
+  box-shadow: inset 0 1px 0 #f3ccff0a, 0 8px 28px #0003;
+}
+html[data-theme="halloween"] #clock-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 130px;
+  background: url('/assets/halloween-web.svg') top left / contain no-repeat;
+  opacity: .3;
+  pointer-events: none;
+}
+html[data-theme="halloween"] #center-heading::before {
+  content: "";
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  margin-right: 8px;
+  vertical-align: -5px;
+  background: url('/assets/halloween-pumpkin.svg') center / contain no-repeat;
+}
+html[data-theme="halloween"] :is(.weather-tabs,.news-tabs,.settings-tabs) [aria-selected="true"] {
+  border-bottom-color: var(--cyan);
+}
+html[data-theme="halloween"] :is(.headline strong,.news-brand) { text-decoration-color: #ffad5566; }
+html[data-theme="halloween"].embedded-panel body { background: transparent; }
+
+html[data-theme="thanksgiving"] body {
+  background: radial-gradient(ellipse at top left, #8c4c263d, transparent 55%),
+              radial-gradient(ellipse at bottom right, #803d3a30, transparent 50%),
+              var(--theme-background);
+}
+html[data-theme="thanksgiving"] .panel {
+  background: linear-gradient(145deg, #453022, var(--theme-panel) 65%);
+  box-shadow: inset 0 1px 0 #ffe5ad0a, 0 8px 28px #0003;
+}
+html[data-theme="thanksgiving"] #clock-panel::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  width: 125px;
+  height: 120px;
+  background: url('/assets/autumn-branch.svg') top left / contain no-repeat;
+  opacity: .45;
+  pointer-events: none;
+}
+html[data-theme="thanksgiving"] #center-heading::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: -5px;
+  background: url('/assets/autumn-leaf.svg') center / contain no-repeat;
+}
+html[data-theme="thanksgiving"] :is(.weather-tabs,.news-tabs,.settings-tabs) [aria-selected="true"] {
+  border-bottom-color: var(--cyan);
+}
+html[data-theme="thanksgiving"] .quote-body blockquote { font-family: Georgia, serif; }
+html[data-theme="thanksgiving"] .headline strong { text-decoration-color: #f3bd6366; }
+html[data-theme="thanksgiving"].embedded-panel body { background: transparent; }
+@media(max-width:650px) {
+  html[data-theme="thanksgiving"] #clock-panel::after { width:90px; height:86px; }
+}

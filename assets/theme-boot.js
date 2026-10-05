@@ -1,9 +1,11 @@
 // Apply the saved appearance before the dashboard is painted.
 (() => {
-  const themes = ['afterglow', 'midnight', 'hearth'];
+  const themes = ['afterglow', 'midnight', 'hearth', 'halloween', 'thanksgiving'];
   const normalize = theme => themes.includes(theme) ? theme : 'midnight';
   window.applyDashboardTheme = theme => {
-    document.documentElement.dataset.theme = normalize(theme);
+    const next=normalize(theme),changed=document.documentElement.dataset.theme!==next;
+    document.documentElement.dataset.theme = next;
+    if(changed)document.dispatchEvent(new Event('dashboard-themechange'));
     for (const frame of document.querySelectorAll('iframe')) {
       try { frame.contentWindow?.applyDashboardTheme?.(theme); } catch {}
     }

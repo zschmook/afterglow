@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Thanksgiving / Fall variant of the bundled Meteocons faces. Original MIT license: ../meteocons/LICENSE. -->
+  <title>Thunderstorms · pumpkin storm</title>
+  <g id="thunderstorms" clip-path="url(#clip0_1858_9911)">
+    <g id="Sky">
+      <g id="Clouds" class="harvest-bob">
+        <g id="Cloud">
+          <path id="Cloud_2" d="M55.2625 48.4746C60.1228 40.6111 70.2976 37.38 78.8152 40.9434C87.3215 44.5023 92.1381 54.0026 89.9031 62.9648L89.7419 63.6143L90.4109 63.585C97.4205 63.2791 103.5 68.9917 103.5 76.0283C103.5 82.8395 97.7719 88.4997 90.9773 88.5H37.9539C31.1276 88.5018 25.203 83.1709 24.5593 76.3604C23.9159 69.5518 28.7371 63.2124 35.4431 61.9453L35.9265 61.8535L35.8425 61.3691C35.0258 56.6239 37.1259 51.7168 41.1052 49.0127C45.0952 46.3014 50.4461 46.1537 54.5798 48.6396L55.0027 48.8945L55.2625 48.4746Z" fill="url(#paint0_linear_1858_9911)" stroke="#8593AA" stroke-miterlimit="10" />
+          <g id="Harvest-costume" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M64 42Q61 31 69 27L73 31Q66 32 69 42Z" fill="#79945b" stroke="#536b3d" />
+            <path d="M72 37Q77 25 90 31Q85 42 72 37Z" fill="#8caa65" stroke="#536b3d" />
+            <path d="M45 53Q37 69 44 84M59 45Q53 59 54 68M82 52Q91 67 86 83M72 44Q79 58 78 67" fill="none" stroke="#c8783a" stroke-width="1.5" opacity=".65" />
+          </g>
+          <g id="Weather-face">
+            <g id="Harvest-face" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="54" cy="65" r="2.4" fill="#654732" />
+              <circle cx="74" cy="65" r="2.4" fill="#654732" />
+              <path d="M56 75Q64 84 72 75" stroke="#654732" stroke-width="2.7" fill="none" />
+              <ellipse cx="46" cy="73" rx="4" ry="2" fill="#de9b79" />
+              <ellipse cx="82" cy="73" rx="4" ry="2" fill="#de9b79" />
+            </g>
+          </g>
+        </g>
+      </g>
+      <g id="Harvest-rain">
+        <g transform="translate(43 88)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#8ebfc6" stroke="#527f88" stroke-width=".7" class="harvest-drop" style="animation-delay:-0s;--rest:5px" />
+        </g>
+        <g transform="translate(63 88)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#8ebfc6" stroke="#527f88" stroke-width=".7" class="harvest-drop" style="animation-delay:-0.6s;--rest:18px" />
+        </g>
+        <g transform="translate(43 88)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#8ebfc6" stroke="#527f88" stroke-width=".7" class="harvest-drop" style="animation-delay:-1s;--rest:5px" />
+        </g>
+        <g transform="translate(63 88)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#8ebfc6" stroke="#527f88" stroke-width=".7" class="harvest-drop" style="animation-delay:-1.6s;--rest:18px" />
+        </g>
+      </g>
+    </g>
+    <g id="Lightning" transform="translate(18 14)">
+      <path id="Lightning Bolt" d="M71.1729 68.5L63.5566 83.041L63.1729 83.7725H75.002L56.9521 107.892L60.4893 91.0117L60.6162 90.4092H52.7041L60.3555 68.5H71.1729Z" fill="url(#paint1_linear_1858_9911)" stroke="#F6A823" stroke-miterlimit="10" />
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1858_9911" x1="64.0009" y1="39" x2="64.0009" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffc37b" />
+      <stop offset="1" stop-color="#e39850" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_1858_9911" x1="64.528" y1="66.0377" x2="84.4144" y2="77.4572" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7B23B" />
+      <stop offset="1" stop-color="#F6A823" />
+    </linearGradient>
+    <clipPath id="clip0_1858_9911">
+      <rect width="128" height="128" fill="white" />
+    </clipPath>
+  </defs>
+  <style>
+.harvest-bob{animation:harvest-bob 3.5s ease-in-out infinite}
+.harvest-rays{transform-origin:64px 64px;animation:harvest-rays 16s linear infinite}
+.harvest-moon{transform-origin:64px 64px;animation:harvest-moon 4s ease-in-out infinite}
+.harvest-feathers{transform-origin:64px 64px;animation:harvest-feathers 4s ease-in-out infinite}
+.harvest-drop{animation:harvest-rain 2s linear infinite;transform:translateY(var(--rest))}
+@keyframes harvest-bob{50%{transform:translateY(-3px)}}
+@keyframes harvest-rays{to{transform:rotate(360deg)}}
+@keyframes harvest-moon{50%{transform:rotate(5deg)}}
+@keyframes harvest-feathers{50%{transform:rotate(-4deg)}}
+@keyframes harvest-rain{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(30px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.harvest-bob,.harvest-rays,.harvest-moon,.harvest-feathers,.harvest-drop{animation:none}.harvest-drop{opacity:1}}
+</style>
+</svg>

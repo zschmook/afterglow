@@ -9,7 +9,14 @@ function zoneLabel(date=new Date(),style='long'){return new Intl.DateTimeFormat(
 let news=[], refreshing=false, newsCategory="local", newsFeeds={}, sportsFeeds={}, sportsLeague=preferences.league;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const expressiveWeather=new Set(['clear-night','fog','snow','clear-day','partly-cloudy-day','partly-cloudy-night','overcast','rain','drizzle','partly-cloudy-day-rain','partly-cloudy-night-rain','thunderstorms']);
-const iconPath=name=>expressiveWeather.has(name)?`/assets/weather-icons/faces/${name}.svg?v=11`:`/assets/weather-icons/meteocons/fill/${name}.svg`;
+const iconPath=name=>expressiveWeather.has(name)?`/assets/weather-icons/${['halloween','thanksgiving'].includes(document.documentElement.dataset.theme)?document.documentElement.dataset.theme:'faces'}/${name}.svg?v=14`:`/assets/weather-icons/meteocons/fill/${name}.svg`;
+document.addEventListener('dashboard-themechange',()=>{
+ for(const image of document.querySelectorAll('img[src*="/assets/weather-icons/"],image[href*="/assets/weather-icons/"]')){
+  const attribute=image.tagName.toLowerCase()==='img'?'src':'href';
+  const name=image.getAttribute(attribute)?.match(/\/([^/?]+)\.svg(?:\?|$)/)?.[1];
+  if(name&&expressiveWeather.has(name))image.setAttribute(attribute,iconPath(name));
+ }
+});
 function weatherInfo(code,day=true){const suffix=day?'day':'night';if(code===0)return ['Clear',`clear-${suffix}`];if(code<=2)return ['Partly cloudy',`partly-cloudy-${suffix}`];if(code===3)return ['Overcast','overcast'];if(code<=48)return ['Foggy','fog'];if(code<=57)return ['Drizzle','drizzle'];if(code<=67)return ['Rain','rain'];if(code<=77)return ['Snow','snow'];if(code<=82)return ['Rain showers',`partly-cloudy-${suffix}-rain`];if(code<=86)return ['Snow showers','snow'];return ['Thunderstorms','thunderstorms'];}
 const svgNS='http://www.w3.org/2000/svg';
 for(let i=0;i<60;i++){const angle=i*Math.PI/30,major=i%5===0,inner=major?158:165;const line=document.createElementNS(svgNS,'line');for(const [k,v]of Object.entries({x1:200+Math.sin(angle)*inner,y1:200-Math.cos(angle)*inner,x2:200+Math.sin(angle)*170,y2:200-Math.cos(angle)*170,stroke:major?'#dcb1e9':'#624475','stroke-width':major?2:1}))line.setAttribute(k,v);$('ticks').append(line);}

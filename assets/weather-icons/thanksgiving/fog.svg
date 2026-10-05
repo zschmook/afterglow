@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Thanksgiving / Fall variant of the bundled Meteocons faces. Original MIT license: ../meteocons/LICENSE. -->
+  <title>Fog · scarf cloud</title>
+  <g id="fog" clip-path="url(#clip0_1858_9374)">
+    <g id="Sky">
+      <g id="Clouds" class="harvest-bob">
+        <g id="Cloud">
+          <path id="Cloud_2" d="M55.2623 48.4746C60.1227 40.6111 70.2975 37.38 78.8151 40.9434C87.3214 44.5023 92.138 54.0026 89.903 62.9648L89.7418 63.6143L90.4108 63.585C97.4203 63.2791 103.5 68.9917 103.5 76.0283C103.5 82.8395 97.7717 88.4997 90.9772 88.5H37.9537C31.1275 88.5018 25.2029 83.1709 24.5592 76.3604C23.9158 69.5518 28.7369 63.2124 35.443 61.9453L35.9264 61.8535L35.8424 61.3691C35.0256 56.6239 37.1258 51.7168 41.1051 49.0127C45.0951 46.3014 50.4459 46.1537 54.5797 48.6396L55.0026 48.8945L55.2623 48.4746Z" fill="url(#paint0_linear_1858_9374)" stroke="#E6EFFC" stroke-miterlimit="10" />
+          <g id="Weather-face" fill="none" stroke="#46516F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M47 58 58 63 M70 63 81 58" />
+            <path d="M49 66 Q54 69 58 67 M70 67 Q74 69 79 66" />
+            <path d="M57 79 Q64 73 71 79" />
+          </g>
+          <g id="Harvest-costume" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M33 82Q62 91 95 81L94 88Q64 99 33 89Z" fill="#a45240" stroke="#753b31" stroke-width="1" />
+            <path d="m83 87 9 0 4 18-10 1Z" fill="#a45240" stroke="#753b31" />
+            <path d="m40 85 0 6m9-4 0 6m11-4 0 6m12-5 1 6m11-8 1 6m1 4 8-2m-7 8 2 0m2 0 2 0m2 0 2 0" stroke="#edc384" stroke-width="1.5" />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Precipitation">
+      <path id="Line 2" d="M40 95H88" stroke="#E2E8F0" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" />
+      <path id="Line 1" d="M40 103H88" stroke="#E2E8F0" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" />
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1858_9374" x1="64.0008" y1="39" x2="64.0008" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3F7FE" />
+      <stop offset="1" stop-color="#E6EFFC" />
+    </linearGradient>
+    <clipPath id="clip0_1858_9374">
+      <rect width="128" height="128" fill="white" />
+    </clipPath>
+  </defs>
+  <style>
+.harvest-bob{animation:harvest-bob 3.5s ease-in-out infinite}
+.harvest-rays{transform-origin:64px 64px;animation:harvest-rays 16s linear infinite}
+.harvest-moon{transform-origin:64px 64px;animation:harvest-moon 4s ease-in-out infinite}
+.harvest-feathers{transform-origin:64px 64px;animation:harvest-feathers 4s ease-in-out infinite}
+.harvest-drop{animation:harvest-rain 2s linear infinite;transform:translateY(var(--rest))}
+@keyframes harvest-bob{50%{transform:translateY(-3px)}}
+@keyframes harvest-rays{to{transform:rotate(360deg)}}
+@keyframes harvest-moon{50%{transform:rotate(5deg)}}
+@keyframes harvest-feathers{50%{transform:rotate(-4deg)}}
+@keyframes harvest-rain{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(30px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.harvest-bob,.harvest-rays,.harvest-moon,.harvest-feathers,.harvest-drop{animation:none}.harvest-drop{opacity:1}}
+</style>
+</svg>
