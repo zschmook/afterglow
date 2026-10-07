@@ -70,6 +70,17 @@ server.shutdown();server.server_close()
   await page.locator('#m3u-expanded select').selectOption(id2);
   await page.waitForFunction(()=>radioService.snapshot().phase==='playing'&&document.querySelector('#m3u-expanded').open&&document.querySelector('.m3u-large-stage video')?.videoWidth>0);
   assert.equal(await page.locator('#m3u-expanded h2').textContent(),'Flower two');
+  const previousRequests=requests;
+  await page.evaluate(()=>{
+   window.disconnectedVideo=document.querySelector('.m3u-large-stage video');
+   disconnectedVideo.dispatchEvent(new Event('error'));
+  });
+  assert(await page.locator('#m3u-expanded').evaluate(dialog=>dialog.open),'Recovery keeps the expanded player open');
+  await page.waitForFunction(()=>radioService.snapshot().phase==='playing'
+    && document.querySelector('.m3u-large-stage video')!==window.disconnectedVideo
+    && document.querySelector('.m3u-large-stage video')?.videoWidth>0,null,{timeout:15000});
+  assert(requests>previousRequests,'Recovery opens a fresh media ticket and upstream stream');
+  assert.equal(await page.locator('#m3u-expanded h2').textContent(),'Flower two');
   await page.keyboard.press('Escape');
   await page.locator('.radio-mini-toggle').click();
   await page.waitForFunction(()=>radioService.snapshot().phase==='stopped');
@@ -77,7 +88,7 @@ server.shutdown();server.server_close()
   assert.equal(subscribers,0,'Stop closes upstream connections');
   assert.equal((await (await fetch(base+'/api/media/status')).json()).active_streams,0);
   assert.deepEqual(errors,[]);
-  console.log('PASS: actual M3U parsing, numbered/grouped channels, MPEG-TS decoding through relay without upstream CORS, expanded channel switching, Stop releases both connections');
+  console.log('PASS: actual M3U parsing, MPEG-TS decoding, channel switching, live recovery with fresh relay tickets, expanded player preserved, Stop releases both connections');
  }finally{
   await browser?.close();
   backend?.stdin.end('\n');

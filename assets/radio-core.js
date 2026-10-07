@@ -65,7 +65,8 @@
       volume: Number.isFinite(saved.volume) ? Math.max(0, Math.min(1, saved.volume)) : 0.5,
       muted: saved.muted === true,
       phase: 'idle', message: '', nowPlaying: ''};
-    let audio = null, timeout = null, loading = null;
+    let audio = null, timeout = null, loading = null, reconnect = null;
+    let retries = 0, played = false, playingSince = null;
     const listeners = new Set();
     const snapshot = () => ({...state, favorites: [...state.favorites], stations: [...state.stations]});
     const emit = () => { for (const listener of listeners) listener(snapshot()); };
@@ -73,6 +74,7 @@
       favorites: state.favorites, volume: state.volume, muted: state.muted, customStation:custom})); } catch {} };
     function release() {
       cancel(timeout); timeout = null;
+      cancel(reconnect); reconnect = null;
       const old = audio; audio = null;
       if (old) { disposeMedia(old); old.pause(); old.removeAttribute('src'); old.load(); }
     }
@@ -80,38 +82,61 @@
       if (current !== audio) return;
       release(); state.phase = 'error'; state.message = message; state.nowPlaying = ''; emit();
     }
-    function watch(current) {
-      cancel(timeout);
-      timeout = later(() => fail(current, 'This station is taking too long. Try again or choose another.'), 20000);
+    const isLive = (current, station) => !station.custom || station.hls || station.mpegts || current.duration === Infinity
+      || /\/(?:guide\/(?:play|stream)|sports\/stream)\//.test(new URL(station.stream).pathname);
+    function recover(current, station, message) {
+      if (current !== audio) return;
+      if (!played || !isLive(current, station)) return fail(current, message);
+      if (playingSince !== null && Date.now() - playingSince >= 30000) retries = 0;
+      playingSince = null;
+      if (retries >= 3) return fail(current, 'The live stream disconnected repeatedly. Press Play to try again.');
+      const delay = 1000 * 2 ** retries++;
+      current.recovering = true;
+      release(); state.phase = 'connecting'; state.message = `Reconnecting live stream (${retries}/3)…`;
+      reconnect = later(() => { reconnect = null; play(station.id, true); }, delay);
+      emit();
     }
-    function play(id) {
+    function watch(current, station) {
+      if (timeout !== null) return;
+      timeout = later(() => { timeout = null; recover(current, station,
+        'This station is taking too long. Try again or choose another.'); }, 20000);
+    }
+    function play(id, recovering = false) {
       const station = state.stations.find(s => s.id === id);
       if (!station) return false;
+      if (!recovering) { retries = 0; played = false; playingSince = null; }
       release(); state.stationId = id; state.phase = 'connecting'; state.message = 'Connecting…'; state.nowPlaying = ''; persist();
       const current = audio = makeAudio(station);
       current.preload = 'none'; current.volume = state.volume; current.muted = state.muted;
       current.addEventListener('playing', () => {
         if (current !== audio) return;
-        cancel(timeout); state.phase = 'playing'; state.message = station.custom ? 'Playing' : 'Live stream'; emit();
+        cancel(timeout); timeout = null; played = true;
+        if (playingSince === null) playingSince = Date.now();
+        state.phase = 'playing'; state.message = station.custom ? 'Playing' : 'Live stream'; emit();
       });
       current.addEventListener('waiting', () => {
         if (current !== audio) return;
-        state.phase = 'connecting'; state.message = 'Buffering…'; watch(current); emit();
+        state.phase = 'connecting'; state.message = 'Buffering…'; watch(current, station); emit();
       });
-      current.addEventListener('error', () => fail(current, 'Couldn’t play this station. Try again or choose another.'));
+      current.addEventListener('stalled', () => { if (current === audio) watch(current, station); });
+      current.addEventListener('error', () => recover(current, station, 'Couldn’t play this station. Try again or choose another.'));
       current.addEventListener('ended', () => {
         if (current !== audio) return;
-        if (!station.custom) return fail(current, 'The stream ended. Press Play to reconnect.');
+        if (isLive(current, station)) {
+          return recover(current, station, 'The stream ended. Press Play to reconnect.');
+        }
         release(); state.phase = 'stopped'; state.message = 'Finished'; state.nowPlaying = ''; emit();
       });
       current.addEventListener('pause', () => {
         if (current !== audio || current.relocating) return;
         release(); state.phase = 'stopped'; state.message = 'Stopped'; state.nowPlaying = ''; emit();
       });
-      watch(current); emit();
-      try { Promise.resolve(startMedia(current, station)).catch(error => fail(current, error?.name === 'NotAllowedError'
-        ? 'Press Play to allow audio in this browser.' : 'Couldn’t play this station. Try again or choose another.')); }
-      catch { fail(current, 'Audio playback is unavailable. Try another station.'); }
+      watch(current, station); emit();
+      try { Promise.resolve(startMedia(current, station)).catch(error => {
+        if (error?.name === 'NotAllowedError') fail(current, 'Press Play to allow audio in this browser.');
+        else recover(current, station, 'Couldn’t play this station. Try again or choose another.');
+      }); }
+      catch { recover(current, station, 'Audio playback is unavailable. Try another station.'); }
       return true;
     }
     function stop() { release(); state.phase = 'stopped'; state.message = 'Stopped'; state.nowPlaying = ''; emit(); }

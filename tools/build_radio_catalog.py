@@ -50,7 +50,8 @@ def build():
             candidate = next((c for c in candidates if c.get('url') == check['url']), {})
             return {**{key: location[key] for key in ('id', 'name', 'callSign', 'preset', 'genre')},
                     'stream': check['url'], 'streamCheckedAt': checked_at, 'contentType': content_type,
-                    'logo': candidate.get('favicon', ''), 'website': candidate.get('homepage', location['source']),
+                    'logo': candidate.get('favicon', ''), 'website': candidate.get('homepage', location.get('streamSource', location['source'])),
+                    **({'streamSource': location['streamSource']} if location.get('streamSource') else {}),
                     'directoryId': candidate.get('stationuuid'),
                     'location': {'city': location['city'], 'region': location['region'], 'country': 'US',
                                  'lat': lat, 'lon': lon, 'verified': True, 'source': location['source'],
@@ -64,7 +65,7 @@ def build():
         stations = [s for s in pool.map(station, locations) if s]
     if not stations:
         raise RuntimeError('No streams verified; existing catalog kept')
-    payload = {'version': 1, 'checkedAt': checked_at, 'scope': 'Reviewed Mid-Atlantic starter catalog',
+    payload = {'version': 1, 'checkedAt': checked_at, 'scope': 'Reviewed regional and US public/music radio catalog',
                'stations': stations}
     output = ROOT / 'assets/radio-stations.json'
     temp = output.with_suffix('.json.tmp')

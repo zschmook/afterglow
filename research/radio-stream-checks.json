@@ -142,5 +142,135 @@
     "type": "audio/aacp",
     "bytes": 2048,
     "station_name": "WQXAFM"
+  },
+  {
+    "name": "WRTI Classical",
+    "url": "https://wrti-live.streamguys1.com/classical-mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://www.wrti.org/listen-live-to-wrti",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WRTI Jazz",
+    "url": "https://wrti-live.streamguys1.com/jazz-mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://www.wrti.org/listen-live-to-wrti",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WBGO Jazz 88.3",
+    "url": "https://ais-sa8.cdnstream1.com/3629_128.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://www.wbgo.org/how-to-listen-online",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WBGO TOO",
+    "url": "https://ais-sa8.cdnstream1.com/3630_128.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://www.wbgo.org/how-to-listen-online",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "KEXP 90.3",
+    "url": "https://kexp.streamguys1.com/kexp160.aac",
+    "status": 200,
+    "type": "audio/aac",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://kexp.org/mobile/kexp-livestreams/",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "KCRW 89.9",
+    "url": "https://streams.kcrw.com/kcrw_mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://pressroom.kcrw.com/kcrw-how-to-listen/",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "KCRW Eclectic24",
+    "url": "https://streams.kcrw.com/e24_mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://pressroom.kcrw.com/kcrw-how-to-listen/",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WNYC 93.9 FM",
+    "url": "https://fm939.wnyc.org/wnycfm",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://wnyc.org/audio-other-formats",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WQXR 105.9",
+    "url": "https://stream.wqxr.org/wqxr",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://wnyc.org/audio-other-formats",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "New Sounds",
+    "url": "https://q2stream.wqxr.org/q2",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://wnyc.org/audio-other-formats",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "Operavore",
+    "url": "https://opera-stream.wqxr.org/operavore",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:49:47.427760+00:00",
+    "source": "https://wnyc.org/audio-other-formats",
+    "browserCheckedAt": "2026-10-07T04:50:16.394Z"
+  },
+  {
+    "name": "WBUR 90.9",
+    "url": "https://icecast-stream.wbur.org/wbur_www",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:52:58.083328+00:00",
+    "source": "https://www.wbur.org/ways-to-listen",
+    "browserCheckedAt": "2026-10-07T04:53:03.389Z"
+  },
+  {
+    "name": "C-SPAN Radio 90.1",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/CSPANRADIO.mp3",
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 4096,
+    "checkedAt": "2026-10-07T04:53:25.821042+00:00",
+    "source": "https://realmusicmedia.net/estados-unidos/c-span",
+    "browserCheckedAt": "2026-10-07T04:53:30.580Z"
   }
 ]

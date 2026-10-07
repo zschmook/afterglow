@@ -277,7 +277,7 @@
     },
     disposeMedia(current){
       current.cancelled=true;current.request?.abort();current.hls?.destroy();current.ts?.destroy();
-      if(media===current){media=null;current.remove();if(dialog.open&&!changingChannel)dialog.close();}
+      if(media===current){media=null;current.remove();if(dialog.open&&!changingChannel&&!current.recovering)dialog.close();}
     },
     openPlayer
   };

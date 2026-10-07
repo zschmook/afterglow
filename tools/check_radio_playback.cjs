@@ -1,7 +1,8 @@
 // Probe browser decoding in an isolated, muted Chrome session. No user tabs/profile.
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 (async()=>{
-  const root=path.resolve(__dirname,'..'),catalog=JSON.parse(fs.readFileSync(path.join(root,'assets/radio-stations.json'),'utf8'));
+  const root=path.resolve(__dirname,'..'),catalogPath=process.argv[2] || 'assets/radio-stations.json';
+  const catalog=JSON.parse(fs.readFileSync(path.resolve(root,catalogPath),'utf8'));
   const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio']});
   const results=[];
   try{
@@ -27,6 +28,6 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
       await page.close();
     }));
   }finally{await browser.close();}
-  fs.writeFileSync(path.join(root,'research/radio-browser-playback-checks.json'),JSON.stringify({checkedAt:new Date().toISOString(),results},null,2)+'\n');
+  fs.writeFileSync(path.resolve(root,process.argv[3] || 'research/radio-browser-playback-checks.json'),JSON.stringify({checkedAt:new Date().toISOString(),results},null,2)+'\n');
   console.log(`Decoded ${results.filter(r=>r.ok).length}/${results.length} station streams in Chrome`);
 })().catch(error=>{console.error(error);process.exitCode=1;});
