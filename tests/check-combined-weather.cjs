@@ -1,0 +1,75 @@
+const {chromium}=require('playwright'),assert=require('assert');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio']});
+ try{
+  const context=await browser.newContext({viewport:{width:1920,height:1080},reducedMotion:'reduce'}),page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await context.addInitScript(()=>localStorage.setItem('dashboard-preferences',JSON.stringify({theme:'halloween',place:{name:'Lititz, PA',lat:40.15,lon:-76.3}})));
+  const now=Math.floor(Date.now()/1000),weather={current:{temperature_2m:42,apparent_temperature:39,weather_code:0,is_day:0,wind_speed_10m:1,relative_humidity_2m:77},timezone:'America/New_York',hourly:{time:[now],temperature_2m:[42],weather_code:[0],is_day:[0],precipitation_probability:[0]},daily:{time:Array.from({length:5},(_,i)=>now+i*86400),weather_code:[0,3,3,3,61],temperature_2m_max:[67,70,68,65,61],temperature_2m_min:[40,50,48,49,52],precipitation_probability_max:[1,1,0,4,69]}};
+  await context.route('**/api/dashboard*',r=>r.fulfill({json:{weather:{data:weather},alerts:{data:{features:[]}},news:{local:{data:[]},national:{data:[]},world:{data:[]}},sports:{nfl:{data:{events:[]}},ncaa:{data:{events:[]}}}}}));
+  await page.goto('http://localhost:10000/',{waitUntil:'domcontentloaded'});
+  await page.waitForSelector('.weather-combined .forecast-days .day');
+  await page.evaluate(()=>window.forecastIconParents=[...document.querySelectorAll('.combined-forecast img,#forecast img')].map(img=>({img,parent:img.parentNode})));
+  assert.equal(await page.locator('#forecast .day').count(),5);
+  assert(await page.locator('.weather-slot-available').isVisible());
+  const fit=await page.locator('.weather-combined').evaluate(card=>card.scrollHeight<=card.clientHeight+1);assert(fit,'Combined card fits without clipping');
+  await page.screenshot({path:'research/combined-weather-desktop.png'});
+  const largeIconWidth=await page.locator('.combined-forecast img').first().evaluate(img=>img.getBoundingClientRect().width);
+  await page.setViewportSize({width:1536,height:864});
+  await page.waitForSelector('.weather-combined .forecast-days');
+  const compactIconWidth=await page.locator('.combined-forecast img').first().evaluate(img=>img.getBoundingClientRect().width);
+  assert(compactIconWidth<largeIconWidth,'Combined forecast icons resize with the window');
+  const scaledFit=await page.locator('.weather-combined').evaluate(card=>({height:card.clientHeight,scroll:card.scrollHeight,parts:[...card.querySelectorAll('.conditions,.weather-bottom,.weather-details,.combined-forecast')].map(e=>({name:e.className,height:e.getBoundingClientRect().height}))}));
+  assert(scaledFit.scroll<=scaledFit.height+1,'Combined card fits a scaled desktop viewport: '+JSON.stringify(scaledFit));
+  await page.screenshot({path:'research/combined-weather-scaled-desktop.png'});
+  await page.setViewportSize({width:1920,height:1080});
+  await page.click('.weather-slot-available button');await page.selectOption('#panel-content','quotes');
+  await page.waitForSelector('.slot-forecast iframe');assert(await page.locator('.weather-combined .forecast-days').isVisible());
+  await page.setViewportSize({width:1280,height:600});await page.waitForSelector('.weather:not(.weather-combined)');
+  assert.equal(await page.locator('.forecast #forecast').count(),1);assert(await page.locator('.slot-forecast iframe').isVisible());
+  await page.click('.slot-forecast .panel-gear');await page.selectOption('#panel-content','forecast');assert(await page.locator('.slot-forecast #forecast').isVisible());
+  await page.setViewportSize({width:390,height:844});assert(await page.locator('.slot-forecast #forecast').isVisible());
+  await page.screenshot({path:'research/combined-weather-mobile.png'});
+  await page.setViewportSize({width:1920,height:1080});await page.waitForSelector('.weather-combined .forecast-days');
+  await page.evaluate(()=>document.documentElement.style.setProperty('--ui-scale','1.4'));
+  await page.waitForSelector('.weather:not(.weather-combined)');assert(await page.locator('.slot-forecast #forecast').isVisible());
+  await page.evaluate(()=>document.documentElement.style.setProperty('--ui-scale','1'));
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  for(const viewport of [{width:1280,height:720},{width:1536,height:864},{width:1920,height:1080}]){
+   await page.setViewportSize(viewport);await page.waitForTimeout(800);
+   const icons=await page.locator('.forecast-days:visible img').evaluateAll(imgs=>imgs.map(i=>({width:i.getBoundingClientRect().width,height:i.getBoundingClientRect().height,loaded:i.complete&&i.naturalWidth>0})));
+   assert.equal(icons.length,5,'Five visible icons at each size');
+   assert(icons.every(i=>i.loaded&&i.width>20&&i.height>20),'Forecast icons remain visible after resize');
+  }
+  assert(await page.evaluate(()=>forecastIconParents.every(({img,parent})=>img.isConnected&&img.parentNode===parent)),'Resize never moves or replaces icon elements');
+  await page.evaluate(()=>{
+   preferences.theme='christmas';window.applyDashboardTheme('christmas');
+  });
+  await page.waitForFunction(()=>[...document.querySelectorAll('.combined-forecast img')].every(img=>img.src.includes('/christmas/')&&img.complete&&img.naturalWidth>0));
+  await page.evaluate(()=>renderWeather({...latestWeatherFeed,data:{...latestWeatherFeed.data,daily:{...latestWeatherFeed.data.daily,temperature_2m_max:[71,72,73,74,75]}}}));
+  await page.waitForFunction(()=>document.querySelector('.combined-forecast .day strong')?.textContent==='71°');
+  await page.screenshot({path:'research/combined-weather-resize-icons.png'});
+  const left=page.getByRole('separator',{name:'Resize left panels'}),right=page.getByRole('separator',{name:'Resize right panels'});
+  const originalSize=await page.locator('#weather-icon').evaluate(img=>img.getBoundingClientRect().width);
+  const originalTemperature=await page.locator('.weather .temperature').evaluate(e=>parseFloat(getComputedStyle(e).fontSize));
+  await left.focus();for(let i=0;i<10;i++)await page.keyboard.press('ArrowDown');
+  await page.waitForFunction(size=>document.querySelector('#weather-icon').getBoundingClientRect().width>size,originalSize);
+  assert(await page.locator('.weather .temperature').evaluate((e,size)=>parseFloat(getComputedStyle(e).fontSize)>size,originalTemperature),'Temperature grows with dragged card height');
+  await page.screenshot({path:'research/weather-drag-scaled.png'});
+  await left.dblclick();
+  const rightBefore=await page.locator('.slot-news').boundingBox();
+  const handle=await left.boundingBox();
+  await page.mouse.move(handle.x+handle.width/2,handle.y+handle.height/2);await page.mouse.down();
+  await page.mouse.move(handle.x+handle.width/2,handle.y-130,{steps:10});await page.mouse.up();
+  assert((await page.locator('.slot-weather').boundingBox()).height<360,'Left drag reduces upper card');
+  await page.waitForSelector('.weather:not(.weather-combined)');assert(await page.locator('.slot-forecast #forecast').isVisible());
+  assert.equal((await page.locator('.slot-news').boundingBox()).height,rightBefore.height,'Left divider does not resize right side');
+  await left.dblclick();await page.waitForSelector('.weather-combined');
+  await right.focus();await page.keyboard.press('ArrowDown');
+  assert.equal(await right.getAttribute('aria-valuenow'),'52');
+  await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.side-right .panel-divider');
+  assert.equal(await right.getAttribute('aria-valuenow'),'52','Right split survives reload');
+  await right.dblclick();assert.equal(await right.getAttribute('aria-valuenow'),'50');
+  assert.deepEqual(errors,[]);console.log('PASS: combined forecast fits, all five days render, alternate lower-left panels preserved, short/mobile/large-text layouts restore separate cards');
+ }finally{await browser.close();}
+})().catch(error=>{console.error(error);process.exitCode=1;});

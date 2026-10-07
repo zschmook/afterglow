@@ -92,3 +92,19 @@ setInterval(()=>{if(weatherTab==='radar'&&!document.hidden)loadRadar(true);},300
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopRadar();else if(weatherTab==='radar')loadRadar();});
 
 refresh();
+const currentWeatherLink=element('a','current-weather-link');
+currentWeatherLink.id='current-weather-link';currentWeatherLink.target='_blank';currentWeatherLink.rel='noopener noreferrer';
+$('weather-icon').before(currentWeatherLink);
+currentWeatherLink.append($('weather-icon'),$('temperature').parentElement);
+function updateWeatherForecastLink(){
+ const place=preferences.place;
+ if(place&&Number.isFinite(place.lat)&&Number.isFinite(place.lon)){
+  currentWeatherLink.href='https://forecast.weather.gov/MapClick.php?'+new URLSearchParams({lat:place.lat,lon:place.lon});
+  currentWeatherLink.setAttribute('aria-label','National Weather Service forecast for '+place.name+' (opens in a new tab)');
+  currentWeatherLink.title='NWS forecast for '+place.name;
+  currentWeatherLink.removeAttribute('aria-disabled');currentWeatherLink.removeAttribute('tabindex');
+ }else{
+  currentWeatherLink.removeAttribute('href');currentWeatherLink.setAttribute('aria-disabled','true');currentWeatherLink.tabIndex=-1;
+ }
+}
+updateWeatherForecastLink();

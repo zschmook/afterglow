@@ -25,11 +25,41 @@ if(panelTypes.includes(embeddedPanel)){
   original.before(slot);slot.append(original,gear);slots[type]={original,slot,frame:null};
   gear.onclick=()=>{selectedSlot=type;$('panel-content').value=panelTypes.includes(layout[type])?layout[type]:type;$('panel-options').showModal();};
  }
+ let updateCombinedWeather=()=>{};
+ let splits={};try{splits=JSON.parse(localStorage.getItem('panel-height-splits')||'{}')||{};}catch{}
+ const dashboard=document.querySelector('.dashboard');
+ for(const [side,top,bottom] of [['left','weather','forecast'],['right','news','scores']]){
+  const column=element('div','side-column side-'+side),divider=element('div','panel-divider');
+  slots[top].slot.before(column);column.append(slots[top].slot,divider,slots[bottom].slot);
+  divider.tabIndex=0;divider.setAttribute('role','separator');divider.setAttribute('aria-orientation','horizontal');
+  divider.setAttribute('aria-label','Resize '+side+' panels');divider.title='Drag to resize · double-click to reset';
+  let percentage=50,dragging=false;
+  const apply=value=>{
+   const height=column.clientHeight-16,min=Math.min(40,180/Math.max(1,height)*100);
+   percentage=Math.max(min,Math.min(100-min,value));
+   column.style.gridTemplateRows=`minmax(0,${percentage}fr) 16px minmax(0,${100-percentage}fr)`;
+   divider.setAttribute('aria-valuemin',String(Math.round(min)));divider.setAttribute('aria-valuemax',String(Math.round(100-min)));
+   divider.setAttribute('aria-valuenow',String(Math.round(percentage)));updateCombinedWeather();
+  };
+  const save=()=>{splits[side]=percentage;try{localStorage.setItem('panel-height-splits',JSON.stringify(splits));}catch{}};
+  const move=event=>apply((event.clientY-column.getBoundingClientRect().top-8)/Math.max(1,column.clientHeight-16)*100);
+  divider.onpointerdown=event=>{if(event.button!==0)return;event.preventDefault();dragging=true;divider.setPointerCapture(event.pointerId);dashboard.classList.add('dashboard-resizing');};
+  divider.onpointermove=event=>{if(dragging)move(event);};
+  const finish=()=>{if(!dragging)return;dragging=false;dashboard.classList.remove('dashboard-resizing');save();};
+  divider.onpointerup=finish;divider.onpointercancel=finish;divider.onlostpointercapture=finish;
+  divider.ondblclick=()=>{apply(50);save();};
+  divider.onkeydown=event=>{
+   const value=event.key==='ArrowUp'?percentage-2:event.key==='ArrowDown'?percentage+2:event.key==='Home'?0:event.key==='End'?100:null;
+   if(value===null)return;event.preventDefault();apply(value);save();
+  };
+  apply(Number.isFinite(splits[side])?splits[side]:50);
+ }
  function displaySlot(type){
   const {original,slot}=slots[type];if(slots[type].frame){window.CustomM3U?.unmount(slots[type].frame);slots[type].frame.remove();slots[type].frame=null;}
   const content=panelTypes.includes(layout[type])?layout[type]:type;original.hidden=content!==type;
   if(content==='m3u'){const card=element('section','panel m3u');slot.prepend(card);slots[type].frame=card;window.CustomM3U.mount(card);}
   else if(content!==type){const frame=element('iframe','widget-frame');frame.title=({weather:'Weather',forecast:'Five-day forecast',news:'News',scores:'Sports',quotes:'Quotes',system:'System stats',radio:'Radio'})[content];frame.src='/?panel='+content;slot.prepend(frame);slots[type].frame=frame;}
+  updateCombinedWeather();
  }
  window.clearM3UCorners=except=>{
   let changed=false;
@@ -37,6 +67,44 @@ if(panelTypes.includes(embeddedPanel)){
   if(changed)saveLayout();
  };
  slotTypes.forEach(displaySlot);
+ // Keep each view mounted: moving animated SVG images between hidden parents
+ // can leave them blank after a resize in some browsers.
+ const forecastDays=$('forecast'),forecastHome=forecastDays.parentNode;
+ const forecastSource=forecastHome.querySelector('.source');
+ const combined=element('section','combined-forecast');combined.hidden=true;
+ combined.setAttribute('aria-label','Five-day forecast');
+ combined.append(element('h3','eyebrow','THE NEXT FEW DAYS'));
+ const combinedDays=element('div','forecast-days');
+ combined.append(combinedDays,forecastSource.cloneNode(true));
+ const syncForecast=()=>combinedDays.replaceChildren(...Array.from(forecastDays.childNodes,node=>node.cloneNode(true)));
+ new MutationObserver(syncForecast).observe(forecastDays,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
+ syncForecast();
+ $('weather-overview').append(combined);
+ const available=element('section','panel weather-slot-available');available.hidden=true;
+ available.append(element('h2','eyebrow','ANOTHER LITTLE SPACE'));
+ const choose=element('button','','Choose a panel');choose.onclick=()=>slots.forecast.slot.querySelector('.panel-gear').click();
+ available.append(choose);slots.forecast.slot.prepend(available);
+ updateCombinedWeather=()=>{
+  const bounds=slots.weather.slot.getBoundingClientRect();
+  const scale=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-scale'))||1;
+  const weatherContent=panelTypes.includes(layout.weather)?layout.weather:'weather';
+  const forecastContent=panelTypes.includes(layout.forecast)?layout.forecast:'forecast';
+  const fits=weatherContent==='weather'&&bounds.width>=300*scale&&bounds.height>=360*scale;
+  combined.hidden=!fits;slots.weather.original.classList.toggle('weather-combined',fits);
+  slots.forecast.original.hidden=forecastContent!=='forecast'||fits;
+  available.hidden=!fits||forecastContent!=='forecast';
+ };
+ new ResizeObserver(updateCombinedWeather).observe(slots.weather.slot);
+ new MutationObserver(updateCombinedWeather).observe(document.documentElement,{attributes:true,attributeFilter:['style']});
+ updateCombinedWeather();
+ const conditions=$('weather-overview').querySelector('.conditions');
+ new ResizeObserver(entries=>{
+  const {width,height}=entries[0].contentRect;if(!width||!height)return;
+  const icon=Math.round(Math.min(height*.82,width*.44));
+  const temperature=Math.round(Math.min(Math.max(42,height*.62),width*.34));
+  slots.weather.original.style.setProperty('--conditions-icon-size',icon+'px');
+  slots.weather.original.style.setProperty('--conditions-temperature-size',temperature+'px');
+ }).observe(conditions);
  $('panel-content').onchange=e=>{
   const content=e.target.value;
   if(content==='m3u'){
