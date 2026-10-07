@@ -45,6 +45,6 @@ $('m3u-settings-form').onsubmit=async event=>{
 $('display-theme').value=preferences.theme;
 $('display-theme').onchange=event=>{
  const theme=event.target.value;
- if(!['afterglow','midnight','hearth','halloween','thanksgiving'].includes(theme))return;
+ if(!['afterglow','midnight','hearth','halloween','thanksgiving','christmas'].includes(theme))return;
  preferences.theme=theme;globalThis.applyDashboardTheme?.(theme);settingsSaved();
 };

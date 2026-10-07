@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Christmas variant of the bundled Meteocons faces. Original MIT license: ../meteocons/LICENSE. -->
+  <title>Rain · Christmas umbrella</title>
+  <g id="rain" clip-path="url(#clip0_1858_8370)">
+    <g id="Sky">
+      <g id="Clouds" class="christmas-bob">
+        <g id="Cloud">
+          <path id="Cloud_2" d="M55.2623 48.4746C60.1227 40.6111 70.2975 37.38 78.8151 40.9434C87.3214 44.5023 92.138 54.0026 89.903 62.9648L89.7418 63.6143L90.4108 63.585C97.4203 63.2791 103.5 68.9917 103.5 76.0283C103.5 82.8395 97.7717 88.4997 90.9772 88.5H37.9537C31.1275 88.5018 25.2029 83.1709 24.5592 76.3604C23.9158 69.5518 28.7369 63.2124 35.443 61.9453L35.9264 61.8535L35.8424 61.3691C35.0256 56.6239 37.1258 51.7168 41.1051 49.0127C45.0951 46.3014 50.4459 46.1537 54.5797 48.6396L55.0026 48.8945L55.2623 48.4746Z" fill="url(#paint0_linear_1858_8370)" stroke="#E6EFFC" stroke-miterlimit="10" />
+          <g id="Weather-face">
+            <g id="Christmas-face" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="54" cy="65" r="2.4" fill="#40546a" />
+              <circle cx="74" cy="65" r="2.4" fill="#40546a" />
+              <path d="M56 76Q64 84 72 76" stroke="#40546a" stroke-width="2.7" fill="none" />
+              <ellipse cx="46" cy="73" rx="4" ry="2" fill="#efb1ae" />
+              <ellipse cx="82" cy="73" rx="4" ry="2" fill="#efb1ae" />
+            </g>
+          </g>
+          <g id="Christmas-costume" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M64 13V17" stroke="#785743" stroke-width="2" />
+            <path d="M33 40Q37 15 64 16Q91 15 96 40Q85 32 79 41Q70 33 64 41Q55 33 49 41Q40 32 33 40Z" fill="#c74c53" stroke="#8e323d" stroke-width="1.2" />
+            <path d="M64 17Q54 24 49 40M64 17Q73 25 79 40" fill="none" stroke="#f3d899" stroke-width="1.5" />
+            <path d="M64 17V41" stroke="#f3d899" />
+            <path d="M96 39V53Q96 62 89 58" fill="none" stroke="#785743" stroke-width="2" />
+            <path d="m40 30 2-3 2 3-2 3Zm43 0 2-3 2 3-2 3Z" fill="#f3d899" />
+          </g>
+        </g>
+      </g>
+      <g id="Christmas-rain">
+        <g transform="translate(43 90)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#9ed5ee" stroke="#5d9ebc" stroke-width=".7" class="christmas-drop" style="animation-delay:-0s;--rest:5px" />
+        </g>
+        <g transform="translate(64 90)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#9ed5ee" stroke="#5d9ebc" stroke-width=".7" class="christmas-drop" style="animation-delay:-0.6s;--rest:18px" />
+        </g>
+        <g transform="translate(85 90)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#9ed5ee" stroke="#5d9ebc" stroke-width=".7" class="christmas-drop" style="animation-delay:-1.2s;--rest:5px" />
+        </g>
+        <g transform="translate(43 90)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#9ed5ee" stroke="#5d9ebc" stroke-width=".7" class="christmas-drop" style="animation-delay:-1.25s;--rest:18px" />
+        </g>
+        <g transform="translate(64 90)">
+          <path d="M0 0Q-4 6-3 8Q0 12 3 8Q4 6 0 0Z" fill="#9ed5ee" stroke="#5d9ebc" stroke-width=".7" class="christmas-drop" style="animation-delay:-1.85s;--rest:5px" />
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1858_8370" x1="64.0008" y1="39" x2="64.0008" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3F7FE" />
+      <stop offset="1" stop-color="#E6EFFC" />
+    </linearGradient>
+    <clipPath id="clip0_1858_8370">
+      <rect width="128" height="128" fill="white" />
+    </clipPath>
+  </defs>
+  <style>
+.christmas-bob{animation:christmas-bob 3.5s ease-in-out infinite}
+.christmas-rays{transform-origin:64px 64px;animation:christmas-rays 16s linear infinite}
+.christmas-moon{transform-origin:64px 64px;animation:christmas-moon 4s ease-in-out infinite}
+.christmas-drop{animation:christmas-rain 2.5s linear infinite;transform:translateY(var(--rest))}
+.christmas-bulb{animation:christmas-glow 3s ease-in-out infinite}
+@keyframes christmas-bob{50%{transform:translateY(-3px)}}
+@keyframes christmas-rays{to{transform:rotate(360deg)}}
+@keyframes christmas-moon{50%{transform:rotate(5deg)}}
+@keyframes christmas-rain{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(30px);opacity:0}}
+@keyframes christmas-glow{50%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){.christmas-bob,.christmas-rays,.christmas-moon,.christmas-drop,.christmas-bulb{animation:none}.christmas-drop,.christmas-bulb{opacity:1}}
+</style>
+</svg>

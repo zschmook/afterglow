@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Christmas variant of the bundled Meteocons faces. Original MIT license: ../meteocons/LICENSE. -->
+  <title>Clear Night · Santa moon</title>
+  <g id="clear-night">
+    <g id="Moon" class="christmas-moon">
+      <path id="Moon_2" d="M60.3018 32.582C55.2817 53.6999 73.6001 74.3477 95.3252 72.5146C91.5193 85.7702 79.1986 95.4998 64.5361 95.5C46.8375 95.5 32.5001 81.3444 32.5 63.8984C32.5 47.8688 44.6066 34.6278 60.3018 32.582Z" fill="url(#paint0_linear_1837_5080)" stroke="#D7A338" stroke-linecap="round" stroke-linejoin="round" />
+      <g id="Cheese-holes" fill="#D7A63D" stroke="#C4922B" stroke-width=".7">
+        <ellipse cx="45" cy="48" rx="3.3" ry="2.7" />
+        <ellipse cx="38.5" cy="60" rx="1.7" ry="2.2" />
+        <ellipse cx="47" cy="87" rx="2.6" ry="1.7" />
+        <ellipse cx="74" cy="85" rx="4" ry="3" />
+        <ellipse cx="83" cy="78" rx="1.7" ry="1.4" />
+        <ellipse cx="60" cy="91" rx="1.5" ry="1" />
+      </g>
+      <g id="Sleeping-mouse" transform="translate(66 52) rotate(26)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 10 C24 14 29 11 27 8 C25 6 23 9 25 10" fill="none" stroke="#E8A4BA" stroke-width="1.2" />
+        <ellipse cx="10" cy="8" rx="9" ry="5.5" fill="#B8ADC7" stroke="#84748F" stroke-width=".8" />
+        <ellipse cx="10" cy="5.5" rx="6.5" ry="3.3" fill="#EEE6F1" />
+        <path d="M16 5 18 1 Q20 0 20 2 L19 6 M12 5 14 1" fill="none" stroke="#DEA1B7" stroke-width="1.8" />
+        <path d="M5 5 Q8 1 10 4 L8 6" fill="none" stroke="#84748F" stroke-width="1.1" />
+        <path d="M3 10 Q-3 11-5 6 L-7 2 Q-3-2 2 0 Q8 3 3 10Z" fill="#DCD4E5" stroke="#84748F" stroke-width=".8" />
+        <circle cx="2" cy="9" r="3.4" fill="#CFC5DB" stroke="#84748F" stroke-width=".8" />
+        <circle cx="2" cy="9" r="1.9" fill="#EAA8BC" />
+        <path d="M-3 3 Q-1 5 1 3" fill="none" stroke="#493950" stroke-width="1" />
+        <circle cx="-7" cy="2" r="1.1" fill="#DB8FA7" />
+        <path d="m-5 4-4 1 m4-2-3-1" fill="none" stroke="#B9A8CA" stroke-width=".6" />
+        <g id="Mouse-nightcap">
+          <path d="M-5 0 Q-5-7 1-7 Q7-7 8-2 L5-1 Q4-5 2-3 L2 0Z" fill="#62B7C4" stroke="#398291" stroke-width=".7" />
+          <path d="M-5 0 Q-1-2 3 0" fill="none" stroke="#D0EEF2" stroke-width="2.3" />
+          <path d="M-2-5 0-3 M1-5 3-3" stroke="#A5DAE1" stroke-width=".7" />
+          <circle cx="7" cy="-1" r="1.7" fill="#E5F6F8" />
+        </g>
+      </g>
+      <g id="Moon-face" fill="none" stroke="#765021" stroke-width="2.5" stroke-linecap="round">
+        <path d="M41 64 Q44 59 47 64 M53 69 Q56 64 59 69" />
+        <path d="M47 76 Q56 88 67 78" />
+        <ellipse cx="41" cy="73" rx="3.5" ry="2" fill="#F18AB7" fill-opacity=".65" stroke="none" />
+        <ellipse cx="68" cy="74" rx="3.5" ry="2" fill="#F18AB7" fill-opacity=".65" stroke="none" />
+      </g>
+      <g id="Christmas-costume" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -6) scale(.85)">
+        <path d="M44 43Q49 18 66 17Q86 17 91 33L82 39Q79 26 68 27L77 44Z" fill="#c74c53" stroke="#8e323d" stroke-width="1.2" />
+        <path d="M48 38Q62 33 79 39L80 46Q61 41 45 46Z" fill="#fff4df" stroke="#d8d8c5" stroke-width="1.2" />
+        <path d="M47 40 48 44m6-5 0 4m6-5 0 4m6-4 0 4m6-3 0 4" stroke="#e4dece" />
+        <circle cx="87" cy="37" r="6" fill="#fff4df" stroke="#d8d8c5" />
+        <path d="M57 25Q64 21 70 23" fill="none" stroke="#ed9090" stroke-width="1.5" />
+      </g>
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1837_5080" x1="64" y1="32" x2="64" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE695" />
+      <stop offset="1" stop-color="#EBC151" />
+    </linearGradient>
+  </defs>
+  <style>
+.christmas-bob{animation:christmas-bob 3.5s ease-in-out infinite}
+.christmas-rays{transform-origin:64px 64px;animation:christmas-rays 16s linear infinite}
+.christmas-moon{transform-origin:64px 64px;animation:christmas-moon 4s ease-in-out infinite}
+.christmas-drop{animation:christmas-rain 2.5s linear infinite;transform:translateY(var(--rest))}
+.christmas-bulb{animation:christmas-glow 3s ease-in-out infinite}
+@keyframes christmas-bob{50%{transform:translateY(-3px)}}
+@keyframes christmas-rays{to{transform:rotate(360deg)}}
+@keyframes christmas-moon{50%{transform:rotate(5deg)}}
+@keyframes christmas-rain{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(30px);opacity:0}}
+@keyframes christmas-glow{50%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){.christmas-bob,.christmas-rays,.christmas-moon,.christmas-drop,.christmas-bulb{animation:none}.christmas-drop,.christmas-bulb{opacity:1}}
+</style>
+</svg>

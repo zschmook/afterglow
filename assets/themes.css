@@ -72,6 +72,24 @@
   --theme-dial-muted: #96734e;
   --theme-dial-accent: #a34f35;
 }
+:root[data-theme="christmas"] {
+  color-scheme: dark;
+  --ink: #fff4df;
+  --muted: #b4cabb;
+  --pink: #efa8aa;
+  --cyan: #f2cd83;
+  --edge: #496957;
+  --theme-background: #10211b;
+  --theme-panel: #1c352b;
+  --theme-control: #13271f;
+  --theme-selected: #543239;
+  --theme-radius: 20px;
+  --theme-face: #fff4df;
+  --theme-face-edge: #e7dabb;
+  --theme-dial-ink: #254d3c;
+  --theme-dial-muted: #738d72;
+  --theme-dial-accent: #a34451;
+}
 html[data-theme]:not([data-theme="afterglow"]) body {
   background: var(--theme-background);
   color: var(--ink);
@@ -206,4 +224,51 @@ html[data-theme="thanksgiving"] .headline strong { text-decoration-color: #f3bd6
 html[data-theme="thanksgiving"].embedded-panel body { background: transparent; }
 @media(max-width:650px) {
   html[data-theme="thanksgiving"] #clock-panel::after { width:90px; height:86px; }
+}
+
+html[data-theme="christmas"] body {
+  background: radial-gradient(ellipse at top left, #436d493d, transparent 55%),
+              radial-gradient(ellipse at bottom right, #82374430, transparent 50%),
+              var(--theme-background);
+}
+html[data-theme="christmas"] .panel {
+  background: linear-gradient(145deg, #294638, var(--theme-panel) 65%);
+  box-shadow: inset 0 1px 0 #ffe5ad0a, 0 8px 28px #0003;
+}
+html[data-theme="christmas"] #clock-panel::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  width: 140px;
+  height: 110px;
+  background: url('/assets/christmas-garland.svg') top left / contain no-repeat;
+  opacity: .6;
+  pointer-events: none;
+}
+html[data-theme="christmas"] #center-heading::before {
+  content: "";
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  margin-right: 8px;
+  vertical-align: -5px;
+  background: url('/assets/christmas-holly.svg') center / contain no-repeat;
+}
+html[data-theme="christmas"] :is(.weather-tabs,.news-tabs,.settings-tabs) [aria-selected="true"] {
+  border-bottom-color: var(--cyan);
+}
+html[data-theme="christmas"] .quote-body blockquote { font-family: Georgia, serif; }
+html[data-theme="christmas"] :is(.headline strong,.news-brand) { text-decoration-color: #f2cd8366; }
+html[data-theme="christmas"].embedded-panel body { background: transparent; }
+@media(max-width:900px) {
+  html[data-theme="christmas"] .clock-wrap:has(> #clock:not([hidden])) {
+    position: relative;
+    inset: auto;
+    flex: 1;
+    min-height: 0;
+  }
+}
+@media(max-width:650px) {
+  html[data-theme="christmas"] #clock-panel::after { width:105px; height:83px; }
 }

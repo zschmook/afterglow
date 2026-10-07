@@ -82,7 +82,46 @@ const {chromium}=require('playwright'),assert=require('assert');
   await page.screenshot({path:'research/theme-mobile.png'});
   await page.click('#close-settings');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.screenshot({path:'research/theme-fall-mobile.png',fullPage:true});
+  await page.setViewportSize({width:1920,height:900});
+  await page.click('#settings');
+  const christmasChild=page.frames().find(f=>f!==page.mainFrame());
+  await christmasChild.evaluate(()=>window.themeSentinel='christmas-mounted');
+  await page.evaluate(()=>window.mediaIdentity=window.radioService);
+  await page.selectOption('#display-theme','christmas');
+  await christmasChild.waitForSelector('html[data-theme="christmas"]');
+  assert.equal(await christmasChild.evaluate(()=>window.themeSentinel),'christmas-mounted');
+  assert(await page.evaluate(()=>window.mediaIdentity===window.radioService));
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),'rgb(16, 33, 27)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('#clock-panel'),'::after').pointerEvents),'none');
+  assert((await page.getAttribute('#weather-icon','src')).includes('/christmas/rain.svg'));
+  for(const selector of ['#forecast img','#hourly-items img']){
+   assert(await page.locator(selector).evaluateAll(images=>images.length>0&&images.every(image=>image.src.includes('/christmas/'))));
+  }
+  await page.click('#close-settings');await page.click('#clock-options');await page.selectOption('#clock-face','sport');await page.click('#close-clock-options');
+  assert((await page.getAttribute('#sp-weather','href')).includes('/christmas/rain.svg'));
+  await page.click('#settings');await page.selectOption('#display-theme','midnight');
+  assert((await page.getAttribute('#sp-weather','href')).includes('/faces/rain.svg'));
+  await page.selectOption('#display-theme','christmas');await page.click('#close-settings');
+  await page.click('#clock-options');await page.selectOption('#clock-face','classic');await page.click('#close-clock-options');
+  await page.reload();assert.equal(await page.getAttribute('html','data-theme'),'christmas');
+  await page.click('#settings');assert.equal(await page.inputValue('#display-theme'),'christmas');await page.click('#close-settings');
+  await page.waitForFunction(()=>[...document.querySelectorAll('#forecast img,#weather-icon')].every(image=>image.complete&&image.naturalWidth>0));
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe')].every(frame=>{
+   const panel=frame.contentDocument?.querySelector('.embedded-selected');
+   return panel&&Number(frame.contentWindow.getComputedStyle(panel).opacity)>.99;
+  }));
+  await page.screenshot({path:'research/theme-christmas.png'});
+  await page.setViewportSize({width:390,height:844});
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  assert(await page.locator('#digital').evaluate(element=>{
+   const rect=element.getBoundingClientRect();
+   return !!document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2)?.closest('#calendar-toggle');
+  }),'Christmas clock must not cover the digital time on mobile');
+  await page.screenshot({path:'research/theme-christmas-mobile.png',fullPage:true});
+  await page.setViewportSize({width:1920,height:720});
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.screenshot({path:'research/theme-christmas-bar.png'});
   assert.deepEqual(errors,[]);
-  console.log('PASS: all five themes, seasonal icons and persistence, embedded changes without reload, media-controller preservation, Sport weather, and mobile fit');
+  console.log('PASS: all six themes, seasonal icons and persistence, embedded changes without reload, media-controller preservation, Sport weather, mobile and bar-monitor fit');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

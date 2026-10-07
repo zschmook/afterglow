@@ -9,7 +9,7 @@ function zoneLabel(date=new Date(),style='long'){return new Intl.DateTimeFormat(
 let news=[], refreshing=false, newsCategory="local", newsFeeds={}, sportsFeeds={}, sportsLeague=preferences.league;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const expressiveWeather=new Set(['clear-night','fog','snow','clear-day','partly-cloudy-day','partly-cloudy-night','overcast','rain','drizzle','partly-cloudy-day-rain','partly-cloudy-night-rain','thunderstorms']);
-const iconPath=name=>expressiveWeather.has(name)?`/assets/weather-icons/${['halloween','thanksgiving'].includes(document.documentElement.dataset.theme)?document.documentElement.dataset.theme:'faces'}/${name}.svg?v=14`:`/assets/weather-icons/meteocons/fill/${name}.svg`;
+const iconPath=name=>expressiveWeather.has(name)?`/assets/weather-icons/${['halloween','thanksgiving','christmas'].includes(document.documentElement.dataset.theme)?document.documentElement.dataset.theme:'faces'}/${name}.svg?v=14`:`/assets/weather-icons/meteocons/fill/${name}.svg`;
 document.addEventListener('dashboard-themechange',()=>{
  for(const image of document.querySelectorAll('img[src*="/assets/weather-icons/"],image[href*="/assets/weather-icons/"]')){
   const attribute=image.tagName.toLowerCase()==='img'?'src':'href';

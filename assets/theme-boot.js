@@ -1,6 +1,6 @@
 // Apply the saved appearance before the dashboard is painted.
 (() => {
-  const themes = ['afterglow', 'midnight', 'hearth', 'halloween', 'thanksgiving'];
+  const themes = ['afterglow', 'midnight', 'hearth', 'halloween', 'thanksgiving', 'christmas'];
   const normalize = theme => themes.includes(theme) ? theme : 'midnight';
   window.applyDashboardTheme = theme => {
     const next=normalize(theme),changed=document.documentElement.dataset.theme!==next;

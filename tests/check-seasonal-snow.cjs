@@ -4,7 +4,7 @@ const {chromium}=require('playwright'),assert=require('assert');
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio']});
  try{
   const page=await browser.newPage({viewport:{width:256,height:256},reducedMotion:'no-preference'});
-  for(const theme of ['halloween','thanksgiving']){
+  for(const theme of ['halloween','thanksgiving','christmas']){
    await page.goto(`http://localhost:10000/assets/weather-icons/${theme}/snow.svg?v=14`);
    await page.waitForSelector('.seasonal-snowflake');
    const initial=await page.locator('.seasonal-snowflake').evaluateAll(flakes=>flakes.map(flake=>{
@@ -30,6 +30,6 @@ const {chromium}=require('playwright'),assert=require('assert');
    assert.deepEqual(await page.locator('.seasonal-snowflake').evaluateAll(flakes=>flakes.map(flake=>getComputedStyle(flake).transform)),still.map(flake=>flake.transform),`${theme}: reduced motion stays still`);
    await page.emulateMedia({reducedMotion:'no-preference'});
   }
-  console.log('PASS: both seasonal snow animations advance, keep flakes visible, and respect reduced motion');
+  console.log('PASS: all three seasonal snow animations advance, keep flakes visible, and respect reduced motion');
  }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

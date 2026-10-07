@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Christmas variant of the bundled Meteocons faces. Original MIT license: ../meteocons/LICENSE. -->
+  <title>Fog · gingerbread fog</title>
+  <g id="fog" clip-path="url(#clip0_1858_9374)">
+    <g id="Sky">
+      <g id="Clouds" class="christmas-bob">
+        <g id="Cloud">
+          <path id="Cloud_2" d="M55.2623 48.4746C60.1227 40.6111 70.2975 37.38 78.8151 40.9434C87.3214 44.5023 92.138 54.0026 89.903 62.9648L89.7418 63.6143L90.4108 63.585C97.4203 63.2791 103.5 68.9917 103.5 76.0283C103.5 82.8395 97.7717 88.4997 90.9772 88.5H37.9537C31.1275 88.5018 25.2029 83.1709 24.5592 76.3604C23.9158 69.5518 28.7369 63.2124 35.443 61.9453L35.9264 61.8535L35.8424 61.3691C35.0256 56.6239 37.1258 51.7168 41.1051 49.0127C45.0951 46.3014 50.4459 46.1537 54.5797 48.6396L55.0026 48.8945L55.2623 48.4746Z" fill="url(#paint0_linear_1858_9374)" stroke="#fff0d3" stroke-miterlimit="10" />
+          <g id="Weather-face">
+            <g id="Christmas-face" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <g id="Christmas-costume" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M29 70Q34 68 38 71M41 53Q46 51 51 54M61 43Q69 42 76 46M94 68Q98 69 99 74M39 84Q43 82 47 85M81 84Q85 82 90 84" fill="none" stroke="#fff0d3" stroke-width="2.5" />
+            <circle cx="54" cy="65" r="2.5" fill="#fff0d3" />
+            <circle cx="74" cy="65" r="2.5" fill="#fff0d3" />
+            <path d="M56 75Q64 83 72 75" stroke="#fff0d3" stroke-width="2.5" fill="none" />
+            <ellipse cx="46" cy="73" rx="3" ry="2" fill="#dd7770" />
+            <ellipse cx="82" cy="73" rx="3" ry="2" fill="#dd7770" />
+            <path d="m54 85 10 2 10-2-2 7-8-3-8 3Z" fill="#51825a" stroke="#31533f" />
+            <circle cx="64" cy="88" r="2" fill="#d96864" />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Precipitation">
+      <path id="Line 2" d="M40 95H88" stroke="#E2E8F0" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" />
+      <path id="Line 1" d="M40 103H88" stroke="#E2E8F0" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" />
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1858_9374" x1="64.0008" y1="39" x2="64.0008" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dbaa70" />
+      <stop offset="1" stop-color="#b97843" />
+    </linearGradient>
+    <clipPath id="clip0_1858_9374">
+      <rect width="128" height="128" fill="white" />
+    </clipPath>
+  </defs>
+  <style>
+.christmas-bob{animation:christmas-bob 3.5s ease-in-out infinite}
+.christmas-rays{transform-origin:64px 64px;animation:christmas-rays 16s linear infinite}
+.christmas-moon{transform-origin:64px 64px;animation:christmas-moon 4s ease-in-out infinite}
+.christmas-drop{animation:christmas-rain 2.5s linear infinite;transform:translateY(var(--rest))}
+.christmas-bulb{animation:christmas-glow 3s ease-in-out infinite}
+@keyframes christmas-bob{50%{transform:translateY(-3px)}}
+@keyframes christmas-rays{to{transform:rotate(360deg)}}
+@keyframes christmas-moon{50%{transform:rotate(5deg)}}
+@keyframes christmas-rain{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(30px);opacity:0}}
+@keyframes christmas-glow{50%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){.christmas-bob,.christmas-rays,.christmas-moon,.christmas-drop,.christmas-bulb{animation:none}.christmas-drop,.christmas-bulb{opacity:1}}
+</style>
+</svg>
